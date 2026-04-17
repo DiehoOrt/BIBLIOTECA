@@ -234,6 +234,47 @@ python manage.py crear_roles
 
 ---
 
+## Flujo de trabajo (Git)
+
+### Ramas principales
+
+| Rama | Propósito |
+|---|---|
+| `main` | Código estable, listo para entregar |
+| `develop` | Integración de cambios antes de pasar a `main` |
+| `avance-50` | Versión de presentación al 50% |
+
+### Ramas de trabajo
+
+- `feature/nombre` — para agregar funcionalidad nueva
+- `fix/nombre` — para corregir bugs
+
+### Reglas
+
+- Siempre partir de `develop` para crear una rama nueva
+- Los Pull Requests van hacia `develop`, nunca directo a `main`
+- Solo el administrador hace merge de `develop` a `main`
+
+### Ejemplo para colaboradores
+
+```bash
+# 1. Actualizar develop local
+git checkout develop
+git pull origin develop
+
+# 2. Crear rama para tu tarea
+git checkout -b feature/mi-funcionalidad
+
+# 3. Trabajar, hacer commits
+git add .
+git commit -m "descripción del cambio"
+
+# 4. Subir la rama y abrir Pull Request hacia develop
+git push origin feature/mi-funcionalidad
+```
+
+---
+
 ## Variables de entorno recomendadas para producción
 
 Antes de desplegar en producción edita `settings.py`:
