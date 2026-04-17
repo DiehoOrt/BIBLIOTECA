@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Eliminar categoría — Biblioteca{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{% url 'libros:categorias_lista' %}" class="text-muted small text-decoration-none">
+        <i class="bi bi-arrow-left me-1"></i>Categorías
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card shadow-sm border-danger">
+            <div class="card-body p-4 text-center">
+                <div class="rounded-circle bg-danger bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3"
+                     style="width:56px;height:56px;">
+                    <i class="bi bi-trash text-danger fs-4"></i>
+                </div>
+                <h5 class="fw-bold">¿Eliminar categoría?</h5>
+                <p class="text-muted mb-1">Estás a punto de eliminar:</p>
+                <p class="fw-semibold fs-5 mb-3">"{{ categoria.nombre }}"</p>
+
+                {% with total=categoria.libros.count %}
+                {% if total %}
+                <div class="alert alert-warning small py-2 text-start">
+                    <i class="bi bi-exclamation-triangle me-1"></i>
+                    Esta categoría está asignada a <strong>{{ total }} libro{{ total|pluralize }}</strong>.
+                    Al eliminarla, esos libros quedarán sin esta categoría.
+                </div>
+                {% endif %}
+                {% endwith %}
+
+                <form method="post" class="d-flex gap-2 justify-content-center mt-3">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-1"></i>Sí, eliminar
+                    </button>
+                    <a href="{% url 'libros:categorias_lista' %}" class="btn btn-outline-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

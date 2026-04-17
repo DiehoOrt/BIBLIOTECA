@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% block title %}{{ alumno.apellido }}, {{ alumno.nombre }} — Biblioteca{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <a href="{% url 'alumnos:lista' %}" class="text-muted small text-decoration-none">
+            <i class="bi bi-arrow-left me-1"></i>Alumnos
+        </a>
+        <h4 class="fw-bold mb-0 mt-1">{{ alumno.apellido }}, {{ alumno.nombre }}</h4>
+    </div>
+    <a href="{% url 'alumnos:editar' alumno.pk %}"
+       class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-pencil me-1"></i>Editar
+    </a>
+</div>
+
+<!-- Datos del alumno -->
+<div class="row g-3 mb-4">
+    <div class="col-md-8">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h6 class="text-muted fw-semibold mb-3">Datos del alumno</h6>
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Carnet</dt>
+                    <dd class="col-sm-8"><code>{{ alumno.carnet }}</code></dd>
+
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8">{{ alumno.email }}</dd>
+
+                    <dt class="col-sm-4">Inscripción</dt>
+                    <dd class="col-sm-8">{{ alumno.fecha_inscripcion }}</dd>
+
+                    <dt class="col-sm-4">Estado</dt>
+                    <dd class="col-sm-8">
+                        {% if alumno.estado == 'activo' %}
+                            <span class="badge bg-success">Activo</span>
+                        {% elif alumno.estado == 'suspendido' %}
+                            <span class="badge bg-warning text-dark">Suspendido</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Inactivo</span>
+                        {% endif %}
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center d-flex flex-column justify-content-center gap-2">
+                <div>
+                    <p class="text-muted small mb-0">Préstamos activos</p>
+                    <p class="fs-1 fw-bold text-primary mb-0">{{ activos|length }}</p>
+                </div>
+                <div>
+                    <p class="text-muted small mb-0">Multas pendientes</p>
+                    <p class="fs-1 fw-bold {% if multas_pendientes %}text-danger{% else %}text-success{% endif %} mb-0">
+                        {{ multas_pendientes|length }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Préstamos activos / vencidos -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-white fw-semibold border-bottom">
+        <i class="bi bi-bookmark-check me-2 text-primary"></i>Préstamos activos
+        {% if activos %}
+            <span class="badge bg-primary ms-1">{{ activos|length }}</span>
+        {% endif %}
+    </div>
+    <div class="card-body p-0">
+        {% if activos %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr><th>Libro</th><th>Prestado</th><th>Límite</th><th>Estado</th></tr>
+                </thead>
+                <tbody>
+                    {% for p in activos %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'libros:detalle' p.libro.pk %}" class="fw-semibold text-decoration-none">
+                                {{ p.libro.titulo }}
+                            </a>
+                        </td>
+                        <td>{{ p.fecha_prestamo }}</td>
+                        <td>{{ p.fecha_devolucion_esperada }}</td>
+                        <td>
+                            {% if p.estado == 'vencido' %}
+                                <span class="badge bg-danger">Vencido</span>
+                            {% else %}
+                                <span class="badge bg-success">Activo</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center text-muted py-4">
+            <i class="bi bi-check-circle-fill text-success fs-3 d-block mb-2"></i>
+            Sin préstamos activos
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Multas pendientes -->
+{% if multas_pendientes %}
+<div class="card shadow-sm border-danger mb-4">
+    <div class="card-header bg-danger bg-opacity-10 fw-semibold text-danger border-bottom">
+        <i class="bi bi-receipt-cutoff me-2"></i>Multas pendientes
+        <span class="badge bg-danger ms-1">{{ multas_pendientes|length }}</span>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr><th>Libro</th><th>Motivo</th><th>Monto</th><th>Estado</th></tr>
+                </thead>
+                <tbody>
+                    {% for m in multas_pendientes %}
+                    <tr>
+                        <td>{{ m.prestamo.libro.titulo }}</td>
+                        <td class="text-muted small">{{ m.motivo }}</td>
+                        <td><strong>${{ m.monto }}</strong></td>
+                        <td><span class="badge bg-warning text-dark">Pendiente</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Historial -->
+<div class="card shadow-sm">
+    <div class="card-header bg-white fw-semibold border-bottom">
+        <i class="bi bi-clock-history me-2 text-secondary"></i>Historial de préstamos
+        {% if historial %}
+            <span class="badge bg-secondary ms-1">últimos {{ historial|length }}</span>
+        {% endif %}
+    </div>
+    <div class="card-body p-0">
+        {% if historial %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr><th>Libro</th><th>Prestado</th><th>Devuelto</th><th>¿A tiempo?</th></tr>
+                </thead>
+                <tbody>
+                    {% for p in historial %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'libros:detalle' p.libro.pk %}" class="text-decoration-none">
+                                {{ p.libro.titulo }}
+                            </a>
+                        </td>
+                        <td>{{ p.fecha_prestamo }}</td>
+                        <td>{{ p.fecha_devolucion_real }}</td>
+                        <td>
+                            {% if p.fecha_devolucion_real <= p.fecha_devolucion_esperada %}
+                                <span class="badge bg-success">A tiempo</span>
+                            {% else %}
+                                <span class="badge bg-danger">Tardío</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center text-muted py-4">Sin historial de devoluciones</div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

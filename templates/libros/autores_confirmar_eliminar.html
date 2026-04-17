@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Eliminar autor — Biblioteca{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{% url 'libros:autores_lista' %}" class="text-muted small text-decoration-none">
+        <i class="bi bi-arrow-left me-1"></i>Autores
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card shadow-sm border-danger">
+            <div class="card-body p-4 text-center">
+                <div class="rounded-circle bg-danger bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3"
+                     style="width:56px;height:56px;">
+                    <i class="bi bi-trash text-danger fs-4"></i>
+                </div>
+                <h5 class="fw-bold">¿Eliminar autor?</h5>
+                <p class="text-muted mb-1">Estás a punto de eliminar:</p>
+                <p class="fw-semibold fs-5 mb-3">"{{ autor }}"</p>
+
+                {% with total=libros.count %}
+                {% if total %}
+                <div class="alert alert-warning small py-2 text-start">
+                    <i class="bi bi-exclamation-triangle me-1"></i>
+                    Este autor está asociado a <strong>{{ total }} libro{{ total|pluralize }}</strong>.
+                    Al eliminarlo, esos libros quedarán sin este autor pero <strong>no serán eliminados</strong>.
+                </div>
+                {% endif %}
+                {% endwith %}
+
+                <form method="post" class="d-flex gap-2 justify-content-center mt-3">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-1"></i>Sí, eliminar
+                    </button>
+                    <a href="{% url 'libros:autores_lista' %}" class="btn btn-outline-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Catálogo — Biblioteca{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/UNICAES_Logo.png' %}">
+    {% block extra_css %}{% endblock %}
+
+    <style>
+        body { padding-top: 72px; }
+        .nav-publica {
+            background: #ffffff;
+            border-bottom: 1px solid #e9ecef;
+            box-shadow: 0 1px 4px rgba(0,0,0,.06);
+            height: 72px;
+        }
+        .nav-publica .navbar-brand {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #212529;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar pública — sin sidebar -->
+<nav class="navbar nav-publica fixed-top">
+    <div class="container d-flex align-items-center justify-content-between">
+
+        <a class="navbar-brand" href="{% url 'catalogo' %}">
+            <img src="{% static 'img/UNICAES_Logo.png' %}" alt="UNICAES" height="28">
+            Biblioteca
+        </a>
+
+        <div class="d-flex align-items-center gap-2">
+            {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-speedometer2 me-1"></i>Dashboard
+            </a>
+            {% endif %}
+        </div>
+
+    </div>
+</nav>
+
+<!-- Contenido -->
+<main class="main-content">
+    {% block content %}{% endblock %}
+</main>
+
+{% block footer %}{% endblock %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

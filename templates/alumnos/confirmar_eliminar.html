@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Eliminar alumno — Biblioteca{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{% url 'alumnos:perfil' alumno.pk %}" class="text-muted small text-decoration-none">
+        <i class="bi bi-arrow-left me-1"></i>{{ alumno }}
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card shadow-sm {% if bloqueado %}border-warning{% else %}border-danger{% endif %}">
+            <div class="card-body p-4 text-center">
+                <div class="rounded-circle {% if bloqueado %}bg-warning{% else %}bg-danger{% endif %} bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3"
+                     style="width:56px;height:56px;">
+                    <i class="bi {% if bloqueado %}bi-lock{% else %}bi-trash{% endif %} {% if bloqueado %}text-warning{% else %}text-danger{% endif %} fs-4"></i>
+                </div>
+
+                {% if bloqueado %}
+                    <h5 class="fw-bold">No se puede eliminar</h5>
+                    <p class="text-muted mb-3">
+                        <strong>{{ alumno.nombre }} {{ alumno.apellido }}</strong> tiene
+                        <strong>{{ prestamos.count }} préstamo{{ prestamos.count|pluralize }}</strong> registrado{{ prestamos.count|pluralize }}.
+                        Debes devolverlos o eliminarlos antes de poder borrar este alumno.
+                    </p>
+                    <div class="text-start bg-light rounded p-3 mb-3">
+                        <p class="small fw-semibold text-muted mb-2">Préstamos vinculados:</p>
+                        <ul class="list-unstyled mb-0 small">
+                            {% for p in prestamos %}
+                            <li class="mb-1">
+                                <i class="bi bi-journal-text me-1 text-muted"></i>
+                                {{ p.libro.titulo|truncatechars:40 }}
+                                <span class="badge {% if p.estado == 'activo' %}bg-success-subtle text-success{% elif p.estado == 'vencido' %}bg-danger-subtle text-danger{% else %}bg-secondary-subtle text-secondary{% endif %} ms-1">
+                                    {{ p.estado }}
+                                </span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <a href="{% url 'alumnos:perfil' alumno.pk %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Volver al perfil
+                    </a>
+
+                {% else %}
+                    <h5 class="fw-bold">¿Eliminar alumno?</h5>
+                    <p class="text-muted mb-1">Estás a punto de eliminar:</p>
+                    <p class="fw-semibold fs-5 mb-3">"{{ alumno }}"</p>
+                    <p class="text-muted small mb-4">Esta acción no se puede deshacer.</p>
+                    <form method="post" class="d-flex gap-2 justify-content-center">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash me-1"></i>Sí, eliminar
+                        </button>
+                        <a href="{% url 'alumnos:perfil' alumno.pk %}" class="btn btn-outline-secondary">Cancelar</a>
+                    </form>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Gestión Biblioteca{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/UNICAES_Logo.png' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- ═══════════════════ TOP NAVBAR ═══════════════════ -->
+<nav class="navbar fixed-top">
+    <div class="container-fluid px-3 d-flex align-items-center justify-content-between">
+
+        <!-- Toggler solo para usuarios autenticados -->
+        {% if user.is_authenticated %}
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="offcanvas" data-bs-target="#sidebarNav"
+                aria-controls="sidebarNav" aria-label="Abrir menú">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        {% else %}
+        <span style="width:40px;"></span>
+        {% endif %}
+
+        <!-- Marca: link al dashboard si autenticado, solo texto si no -->
+        {% if user.is_authenticated %}
+        <a class="navbar-brand" href="{% url 'dashboard' %}">
+            <img src="{% static 'img/UNICAES_Logo.png' %}" alt="UNICAES" height="28" class="me-2">
+            Biblioteca
+        </a>
+        {% else %}
+        <span class="navbar-brand">
+            <img src="{% static 'img/UNICAES_Logo.png' %}" alt="UNICAES" height="28" class="me-2">
+            Biblioteca
+        </span>
+        {% endif %}
+
+        <!-- Usuario en la topbar / botón login -->
+        <div class="d-flex align-items-center gap-2">
+            {% if user.is_authenticated %}
+            <span class="topbar-user">
+                <i class='bx bx-user-circle'></i> {{ user.username }}
+            </span>
+            {% endif %}
+        </div>
+
+    </div>
+</nav>
+
+<!-- ═══════════════════ OFFCANVAS SIDEBAR (solo autenticados) ═══════════════════ -->
+{% if user.is_authenticated %}
+<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarNav" aria-labelledby="sidebarNavLabel">
+
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="sidebarNavLabel">Menú</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+    </div>
+
+    <div class="offcanvas-body">
+        <ul class="navbar-nav flex-column">
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'dashboard' %}">
+                    <i class='bx bx-tachometer'></i> Dashboard
+                </a>
+            </li>
+
+            <li class="nav-separator">GESTIÓN</li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'prestamos:lista' %}">
+                    <i class='bx bx-transfer-alt'></i> Préstamos
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'alumnos:lista' %}">
+                    <i class='bx bxs-graduation'></i> Alumnos
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'multas:lista' %}">
+                    <i class='bx bx-receipt'></i> Multas
+                </a>
+            </li>
+
+            <li class="nav-separator">CATÁLOGO</li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'libros:lista' %}">
+                    <i class='bx bx-book-open'></i> Libros
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'libros:autores_lista' %}">
+                    <i class='bx bx-user-pin'></i> Autores
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'libros:categorias_lista' %}">
+                    <i class='bx bx-purchase-tag'></i> Categorías
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'catalogo' %}">
+                    <i class='bx bx-grid-alt'></i> Catálogo público
+                </a>
+            </li>
+
+            {% if user.is_superuser %}
+            <li class="nav-separator">ADMINISTRACIÓN</li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/">
+                    <i class='bx bx-shield'></i> Panel Admin
+                </a>
+            </li>
+            {% endif %}
+
+        </ul>
+    </div>
+
+    <!-- Auth section al pie del sidebar -->
+    <div class="auth-section">
+        <div class="dropup w-100">
+            <button class="auth-btn dropdown-toggle" type="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                <i class='bx bx-user auth-icon'></i>
+                <span>{{ user.username }}</span>
+            </button>
+            <ul class="dropdown-menu auth-dropdown">
+                <li>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="auth-dropdown-item w-100 border-0 bg-transparent text-start">
+                            <i class='bx bx-log-out auth-icon'></i> Cerrar sesión
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+{% endif %}
+<!-- ═══════════════════ FIN SIDEBAR ═══════════════════ -->
+
+<!-- ═══════════════════ CONTENIDO PRINCIPAL ═══════════════════ -->
+<main class="main-content">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% block content %}{% endblock %}
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/nav_active.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

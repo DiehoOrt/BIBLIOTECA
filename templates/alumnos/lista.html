@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}Alumnos — Biblioteca{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0">
+        <i class="bi bi-mortarboard me-2 text-primary"></i>Alumnos
+    </h4>
+    <a href="{% url 'alumnos:crear' %}" class="btn btn-primary btn-sm">
+        <i class="bi bi-plus-lg me-1"></i>Nuevo alumno
+    </a>
+</div>
+
+<!-- Filtros -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body py-3">
+        <form method="get" class="d-flex gap-2 flex-wrap">
+            <input type="text" name="q" value="{{ q }}"
+                   class="form-control" style="max-width:320px;"
+                   placeholder="Buscar por nombre, apellido o carnet…" autofocus>
+            <select name="estado" class="form-select" style="max-width:180px;">
+                <option value="">Todos los estados</option>
+                <option value="activo"      {% if estado == 'activo' %}selected{% endif %}>Activo</option>
+                <option value="inactivo"    {% if estado == 'inactivo' %}selected{% endif %}>Inactivo</option>
+                <option value="suspendido"  {% if estado == 'suspendido' %}selected{% endif %}>Suspendido</option>
+            </select>
+            <button type="submit" class="btn btn-primary px-4">
+                <i class="bi bi-search"></i>
+            </button>
+            {% if q or estado %}
+            <a href="{% url 'alumnos:lista' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-x-lg"></i>
+            </a>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+<!-- Tabla -->
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Carnet</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Inscripción</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for alumno in alumnos %}
+                    <tr>
+                        <td><code>{{ alumno.carnet }}</code></td>
+                        <td class="fw-semibold">{{ alumno.apellido }}, {{ alumno.nombre }}</td>
+                        <td class="text-muted small">{{ alumno.email }}</td>
+                        <td>{{ alumno.fecha_inscripcion }}</td>
+                        <td>
+                            {% if alumno.estado == 'activo' %}
+                                <span class="badge bg-success">Activo</span>
+                            {% elif alumno.estado == 'suspendido' %}
+                                <span class="badge bg-warning text-dark">Suspendido</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Inactivo</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <a href="{% url 'alumnos:perfil' alumno.pk %}"
+                               class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-person me-1"></i>Perfil
+                            </a>
+                            <a href="{% url 'alumnos:editar' alumno.pk %}"
+                               class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-5">
+                            {% if q or estado %}
+                                No se encontraron alumnos con esos criterios
+                            {% else %}
+                                No hay alumnos registrados
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

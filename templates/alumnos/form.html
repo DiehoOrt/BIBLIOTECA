@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+{% block title %}{{ titulo }} — Biblioteca{% endblock %}
+
+{% block content %}
+
+<!-- Encabezado -->
+<div class="mb-4">
+    <a href="{% if alumno %}{% url 'alumnos:perfil' alumno.pk %}{% else %}{% url 'alumnos:lista' %}{% endif %}"
+       class="text-muted small text-decoration-none">
+        <i class="bi bi-arrow-left me-1"></i>{% if alumno %}{{ alumno }}{% else %}Alumnos{% endif %}
+    </a>
+    <div class="d-flex align-items-center gap-2 mt-2">
+        <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center"
+             style="width:42px;height:42px;flex-shrink:0;">
+            <i class="bi {% if alumno %}bi-pencil-square{% else %}bi-person-plus{% endif %} text-primary fs-5"></i>
+        </div>
+        <div>
+            <h3 class="fw-bold mb-0 lh-1">{{ titulo }}</h3>
+            <span class="text-muted small">Completa los campos en cada pestaña</span>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 align-items-start">
+
+    <!-- ── Columna principal: formulario ─────────────────── -->
+    <div class="col-lg-7">
+        <form method="post" novalidate id="alumnoForm">
+            {% csrf_token %}
+
+            <ul class="nav nav-tabs" id="alumnoTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="tab-datos-btn"
+                            data-bs-toggle="tab" data-bs-target="#tab-datos"
+                            type="button" role="tab">
+                        Información
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-contacto-btn"
+                            data-bs-toggle="tab" data-bs-target="#tab-contacto"
+                            type="button" role="tab">
+                        Contacto
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-estado-btn"
+                            data-bs-toggle="tab" data-bs-target="#tab-estado"
+                            type="button" role="tab">
+                        Estado
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content border border-top-0 rounded-bottom p-4 bg-white shadow-sm">
+
+                <!-- Tab 1: Información -->
+                <div class="tab-pane fade show active" id="tab-datos" role="tabpanel">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">{{ form.nombre.label }}</label>
+                        {{ form.nombre }}
+                        {% for e in form.nombre.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">{{ form.apellido.label }}</label>
+                        {{ form.apellido }}
+                        {% for e in form.apellido.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                    </div>
+                </div>
+
+                <!-- Tab 2: Contacto -->
+                <div class="tab-pane fade" id="tab-contacto" role="tabpanel">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">{{ form.carnet.label }}</label>
+                        {{ form.carnet }}
+                        {% for e in form.carnet.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">{{ form.email.label }}</label>
+                        {{ form.email }}
+                        {% for e in form.email.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                    </div>
+                </div>
+
+                <!-- Tab 3: Estado -->
+                <div class="tab-pane fade" id="tab-estado" role="tabpanel">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">{{ form.estado.label }}</label>
+                        {{ form.estado }}
+                        {% for e in form.estado.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                    </div>
+                    <div class="alert alert-info small py-2 mt-3">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Los alumnos <strong>suspendidos</strong> o <strong>inactivos</strong> no pueden recibir nuevos préstamos.
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-lg me-1"></i>{{ accion }}
+                </button>
+                <a href="{% if alumno %}{% url 'alumnos:perfil' alumno.pk %}{% else %}{% url 'alumnos:lista' %}{% endif %}"
+                   class="btn btn-outline-secondary">Cancelar</a>
+                {% if alumno %}
+                <a href="{% url 'alumnos:eliminar' alumno.pk %}" class="btn btn-outline-danger ms-auto">
+                    <i class="bi bi-trash me-1"></i>Eliminar
+                </a>
+                {% endif %}
+            </div>
+
+        </form>
+
+        <!-- Últimos alumnos agregados -->
+        {% if ultimos_alumnos %}
+        <div class="mt-4 pt-3 border-top">
+            <h6 class="text-muted fw-semibold mb-3">
+                <i class="bi bi-clock-history me-1"></i>Últimos alumnos agregados
+            </h6>
+            <div class="bg-white rounded shadow-sm overflow-hidden">
+                <table class="table table-sm table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="small fw-semibold">Alumno</th>
+                            <th class="small fw-semibold">Carnet</th>
+                            <th class="small fw-semibold">Estado</th>
+                            <th class="small fw-semibold">Inscripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in ultimos_alumnos %}
+                        <tr>
+                            <td class="small">
+                                <a href="{% url 'alumnos:perfil' a.pk %}" class="text-decoration-none fw-semibold">
+                                    {{ a.nombre }} {{ a.apellido }}
+                                </a>
+                            </td>
+                            <td class="small text-muted">{{ a.carnet }}</td>
+                            <td>
+                                {% if a.estado == 'activo' %}
+                                    <span class="badge bg-success-subtle text-success">Activo</span>
+                                {% elif a.estado == 'suspendido' %}
+                                    <span class="badge bg-warning-subtle text-warning">Suspendido</span>
+                                {% else %}
+                                    <span class="badge bg-secondary-subtle text-secondary">Inactivo</span>
+                                {% endif %}
+                            </td>
+                            <td class="small text-muted">{{ a.fecha_inscripcion|date:"d/m/Y" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- ── Columna lateral: instrucciones ────────────────── -->
+    <div class="col-lg-5">
+        <div class="bg-white rounded shadow-sm p-4">
+
+            <!-- Tips: Información -->
+            <div id="tips-datos" class="tips-panel">
+                <h6 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-person-vcard text-primary"></i>Información personal
+                </h6>
+                <ul class="list-unstyled mb-0" style="font-size:.88rem;">
+                    <li class="mb-3 d-flex gap-2">
+                        <i class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>Nombre</strong><br>
+                            <span class="text-muted">Ingresa solo el primer nombre. Usa mayúscula inicial (ej. <em>Carlos</em>).</span>
+                        </div>
+                    </li>
+                    <li class="d-flex gap-2">
+                        <i class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>Apellido</strong><br>
+                            <span class="text-muted">Ingresa apellido paterno y materno (ej. <em>García López</em>).</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tips: Contacto -->
+            <div id="tips-contacto" class="tips-panel d-none">
+                <h6 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-envelope text-primary"></i>Datos de contacto
+                </h6>
+                <ul class="list-unstyled mb-0" style="font-size:.88rem;">
+                    <li class="mb-3 d-flex gap-2">
+                        <i class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>Carnet</strong><br>
+                            <span class="text-muted">Código único de identificación del alumno. Debe ser único en el sistema (ej. <em>20210001</em>).</span>
+                        </div>
+                    </li>
+                    <li class="d-flex gap-2">
+                        <i class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>Correo electrónico</strong><br>
+                            <span class="text-muted">Preferiblemente el correo institucional. Debe ser único por alumno.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tips: Estado -->
+            <div id="tips-estado" class="tips-panel d-none">
+                <h6 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-toggle-on text-primary"></i>Estado del alumno
+                </h6>
+                <ul class="list-unstyled mb-0" style="font-size:.88rem;">
+                    <li class="mb-3 d-flex gap-2">
+                        <span class="badge bg-success-subtle text-success mt-1 flex-shrink-0" style="font-size:.72rem;">Activo</span>
+                        <span class="text-muted">Puede recibir préstamos normalmente.</span>
+                    </li>
+                    <li class="mb-3 d-flex gap-2">
+                        <span class="badge bg-warning-subtle text-warning mt-1 flex-shrink-0" style="font-size:.72rem;">Suspendido</span>
+                        <span class="text-muted">Bloqueado temporalmente, no puede recibir nuevos préstamos.</span>
+                    </li>
+                    <li class="d-flex gap-2">
+                        <span class="badge bg-secondary-subtle text-secondary mt-1 flex-shrink-0" style="font-size:.72rem;">Inactivo</span>
+                        <span class="text-muted">Ya no pertenece a la institución.</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Cambiar tips según pestaña activa
+    const tabMap = {
+        'tab-datos-btn':    'tips-datos',
+        'tab-contacto-btn': 'tips-contacto',
+        'tab-estado-btn':   'tips-estado',
+    };
+    document.querySelectorAll('#alumnoTabs button[data-bs-toggle="tab"]').forEach(btn => {
+        btn.addEventListener('shown.bs.tab', function () {
+            Object.values(tabMap).forEach(id => document.getElementById(id).classList.add('d-none'));
+            document.getElementById(tabMap[btn.id])?.classList.remove('d-none');
+        });
+    });
+
+    // Mostrar pestaña con error al cargar
+    const panes = document.querySelectorAll('.tab-pane');
+    for (const pane of panes) {
+        if (pane.querySelector('.text-danger')) {
+            const btn = document.querySelector('[data-bs-target="#' + pane.id + '"]');
+            if (btn) bootstrap.Tab.getOrCreateInstance(btn).show();
+            break;
+        }
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+{% block title %}{{ titulo }} — Biblioteca{% endblock %}
+
+{% block content %}
+
+<!-- Encabezado -->
+<div class="mb-4">
+    <a href="{% if libro %}{% url 'libros:detalle' libro.pk %}{% else %}{% url 'libros:lista' %}{% endif %}"
+       class="text-muted small text-decoration-none">
+        <i class="bi bi-arrow-left me-1"></i>{% if libro %}{{ libro.titulo }}{% else %}Libros{% endif %}
+    </a>
+    <div class="d-flex align-items-center gap-2 mt-2">
+        <div class="rounded-circle bg-warning bg-opacity-10 d-flex align-items-center justify-content-center"
+             style="width:42px;height:42px;flex-shrink:0;">
+            <i class="bi {% if libro %}bi-pencil-square{% else %}bi-book-half{% endif %} text-warning fs-5"></i>
+        </div>
+        <div>
+            <h3 class="fw-bold mb-0 lh-1">{{ titulo }}</h3>
+            <span class="text-muted small">Completa la información del libro en cada pestaña</span>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 align-items-start">
+
+    <!-- ── Columna principal: formulario ─────────────────── -->
+    <div class="col-lg-7">
+        <form method="post" enctype="multipart/form-data" novalidate id="libroForm">
+            {% csrf_token %}
+
+            <ul class="nav nav-tabs" id="libroTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="tab-info-btn"
+                            data-bs-toggle="tab" data-bs-target="#tab-info"
+                            type="button" role="tab">
+                        Información del libro
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-rel-btn"
+                            data-bs-toggle="tab" data-bs-target="#tab-rel"
+                            type="button" role="tab">
+                        Relación
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-arch-btn"
+                            data-bs-toggle="tab" data-bs-target="#tab-arch"
+                            type="button" role="tab">
+                        Archivos
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content border border-top-0 rounded-bottom p-4 bg-white shadow-sm">
+
+                <!-- Tab 1: Información -->
+                <div class="tab-pane fade show active" id="tab-info" role="tabpanel">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">{{ form.titulo.label }}</label>
+                        {{ form.titulo }}
+                        {% for e in form.titulo.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">{{ form.isbn.label }}</label>
+                        {{ form.isbn }}
+                        {% for e in form.isbn.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                    </div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-sm-4">
+                            <label class="form-label fw-semibold small">{{ form.anio_publicacion.label }}</label>
+                            {{ form.anio_publicacion }}
+                            {% for e in form.anio_publicacion.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="form-label fw-semibold small">{{ form.cantidad_total.label }}</label>
+                            {{ form.cantidad_total }}
+                            {% for e in form.cantidad_total.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="form-label fw-semibold small">{{ form.cantidad_disponible.label }}</label>
+                            {{ form.cantidad_disponible }}
+                            {% for e in form.cantidad_disponible.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">{{ form.descripcion.label }}</label>
+                        {{ form.descripcion }}
+                        {% for e in form.descripcion.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                    </div>
+                </div>
+
+                <!-- Tab 2: Relación -->
+                <div class="tab-pane fade" id="tab-rel" role="tabpanel">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">{{ form.autores_sel.label }}</label>
+                            <div class="border rounded p-3" style="max-height:260px;overflow-y:auto;">
+                                {{ form.autores_sel }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">{{ form.categorias_sel.label }}</label>
+                            <div class="border rounded p-3" style="max-height:260px;overflow-y:auto;">
+                                {{ form.categorias_sel }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Archivos -->
+                <div class="tab-pane fade" id="tab-arch" role="tabpanel">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">{{ form.portada.label }}</label>
+                        {{ form.portada }}
+                        {% for e in form.portada.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                    </div>
+                    {% if libro and libro.portada %}
+                    <div class="mt-3">
+                        <p class="small text-muted mb-1">Portada actual:</p>
+                        <img src="{{ libro.portada.url }}" alt="Portada" class="rounded shadow-sm" style="max-height:180px;">
+                    </div>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-warning text-dark">
+                    <i class="bi bi-check-lg me-1"></i>{{ accion }}
+                </button>
+                <a href="{% if libro %}{% url 'libros:detalle' libro.pk %}{% else %}{% url 'libros:lista' %}{% endif %}"
+                   class="btn btn-outline-secondary">Cancelar</a>
+                {% if libro %}
+                <a href="{% url 'libros:eliminar' libro.pk %}" class="btn btn-outline-danger ms-auto">
+                    <i class="bi bi-trash me-1"></i>Eliminar
+                </a>
+                {% endif %}
+            </div>
+
+        </form>
+
+        <!-- Últimos libros agregados -->
+        {% if ultimos_libros %}
+        <div class="mt-4 pt-3 border-top">
+            <h6 class="text-muted fw-semibold mb-3">
+                <i class="bi bi-clock-history me-1"></i>Últimos libros agregados
+            </h6>
+            <div class="bg-white rounded shadow-sm overflow-hidden">
+                <table class="table table-sm table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="small fw-semibold">Título</th>
+                            <th class="small fw-semibold">ISBN</th>
+                            <th class="small fw-semibold">Año</th>
+                            <th class="small fw-semibold">Disponibles</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for l in ultimos_libros %}
+                        <tr>
+                            <td class="small">
+                                <a href="{% url 'libros:detalle' l.pk %}" class="text-decoration-none fw-semibold">
+                                    {{ l.titulo|truncatechars:30 }}
+                                </a>
+                            </td>
+                            <td class="small text-muted">{{ l.isbn }}</td>
+                            <td class="small text-muted">{{ l.anio_publicacion }}</td>
+                            <td>
+                                {% if l.cantidad_disponible == 0 %}
+                                    <span class="badge bg-danger-subtle text-danger">Sin stock</span>
+                                {% else %}
+                                    <span class="badge bg-success-subtle text-success">{{ l.cantidad_disponible }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- ── Columna lateral: instrucciones ────────────────── -->
+    <div class="col-lg-5">
+        <div class="bg-white rounded shadow-sm p-4">
+
+            <!-- Tips: Información -->
+            <div id="tips-info" class="tips-panel">
+                <h6 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-book text-warning"></i>Información del libro
+                </h6>
+                <ul class="list-unstyled mb-0" style="font-size:.88rem;">
+                    <li class="mb-3 d-flex gap-2">
+                        <i class="bi bi-check-circle-fill text-warning mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>Título</strong><br>
+                            <span class="text-muted">Escribe el título completo tal como aparece en la portada.</span>
+                        </div>
+                    </li>
+                    <li class="mb-3 d-flex gap-2">
+                        <i class="bi bi-check-circle-fill text-warning mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>ISBN</strong><br>
+                            <span class="text-muted">Código único del libro, generalmente de 10 o 13 dígitos. Debe ser único en el sistema.</span>
+                        </div>
+                    </li>
+                    <li class="mb-3 d-flex gap-2">
+                        <i class="bi bi-check-circle-fill text-warning mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>Cantidad total / disponible</strong><br>
+                            <span class="text-muted">Total es el número de ejemplares físicos. Disponible debe ser ≤ total; se actualiza automáticamente con los préstamos.</span>
+                        </div>
+                    </li>
+                    <li class="d-flex gap-2">
+                        <i class="bi bi-check-circle-fill text-warning mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>Descripción</strong><br>
+                            <span class="text-muted">Resumen breve del contenido. Se muestra en el catálogo público al pasar el cursor.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tips: Relación -->
+            <div id="tips-rel" class="tips-panel d-none">
+                <h6 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-diagram-3 text-warning"></i>Autores y categorías
+                </h6>
+                <ul class="list-unstyled mb-0" style="font-size:.88rem;">
+                    <li class="mb-3 d-flex gap-2">
+                        <i class="bi bi-check-circle-fill text-warning mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>Autores</strong><br>
+                            <span class="text-muted">Puedes seleccionar múltiples autores. Si el autor no aparece, agrégalo primero desde el panel de administración.</span>
+                        </div>
+                    </li>
+                    <li class="d-flex gap-2">
+                        <i class="bi bi-check-circle-fill text-warning mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>Categorías</strong><br>
+                            <span class="text-muted">Clasifica el libro para que sea filtrable en el catálogo. Puedes asignar más de una categoría.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tips: Archivos -->
+            <div id="tips-arch" class="tips-panel d-none">
+                <h6 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-image text-warning"></i>Portada
+                </h6>
+                <ul class="list-unstyled mb-0" style="font-size:.88rem;">
+                    <li class="mb-3 d-flex gap-2">
+                        <i class="bi bi-check-circle-fill text-warning mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>Imagen de portada</strong><br>
+                            <span class="text-muted">Formatos aceptados: <strong>PNG, JPG</strong>. Se recomienda una imagen vertical (relación 2:3) para mejor visualización en el catálogo.</span>
+                        </div>
+                    </li>
+                    <li class="d-flex gap-2">
+                        <i class="bi bi-info-circle-fill text-primary mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>Sin portada</strong><br>
+                            <span class="text-muted">Si no subes imagen, el catálogo mostrará un ícono de libro genérico como sustituto.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const tabMap = {
+        'tab-info-btn': 'tips-info',
+        'tab-rel-btn':  'tips-rel',
+        'tab-arch-btn': 'tips-arch',
+    };
+    document.querySelectorAll('#libroTabs button[data-bs-toggle="tab"]').forEach(btn => {
+        btn.addEventListener('shown.bs.tab', function () {
+            Object.values(tabMap).forEach(id => document.getElementById(id).classList.add('d-none'));
+            document.getElementById(tabMap[btn.id])?.classList.remove('d-none');
+        });
+    });
+
+    const panes = document.querySelectorAll('.tab-pane');
+    for (const pane of panes) {
+        if (pane.querySelector('.text-danger')) {
+            const btn = document.querySelector('[data-bs-target="#' + pane.id + '"]');
+            if (btn) bootstrap.Tab.getOrCreateInstance(btn).show();
+            break;
+        }
+    }
+});
+</script>
+{% endblock %}

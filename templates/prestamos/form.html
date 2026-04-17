@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+{% block title %}{{ titulo }} — Biblioteca{% endblock %}
+
+{% block content %}
+
+<!-- Encabezado -->
+<div class="mb-4">
+    <a href="{% url 'prestamos:lista' %}" class="text-muted small text-decoration-none">
+        <i class="bi bi-arrow-left me-1"></i>Préstamos
+    </a>
+    <div class="d-flex align-items-center gap-2 mt-2">
+        <div class="rounded-circle bg-success bg-opacity-10 d-flex align-items-center justify-content-center"
+             style="width:42px;height:42px;flex-shrink:0;">
+            <i class="bi bi-journal-plus text-success fs-5"></i>
+        </div>
+        <div>
+            <h3 class="fw-bold mb-0 lh-1">{{ titulo }}</h3>
+            <span class="text-muted small">Selecciona el alumno, el libro y la fecha de devolución</span>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 align-items-start">
+
+    <!-- ── Columna principal: formulario ─────────────────── -->
+    <div class="col-lg-7">
+        <form method="post" novalidate id="prestamoForm">
+            {% csrf_token %}
+
+            <ul class="nav nav-tabs" id="prestamoTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="tab-alumno-btn"
+                            data-bs-toggle="tab" data-bs-target="#tab-alumno"
+                            type="button" role="tab">
+                        Alumno y libro
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-fecha-btn"
+                            data-bs-toggle="tab" data-bs-target="#tab-fecha"
+                            type="button" role="tab">
+                        Fechas
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content border border-top-0 rounded-bottom p-4 bg-white shadow-sm">
+
+                <!-- Tab 1: Alumno y libro -->
+                <div class="tab-pane fade show active" id="tab-alumno" role="tabpanel">
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center justify-content-between mb-1">
+                            <label class="form-label fw-semibold small mb-0">{{ form.alumno.label }}</label>
+                            <a href="{% url 'alumnos:crear' %}" class="btn btn-sm btn-outline-primary py-0 px-2" style="font-size:0.78rem;" target="_blank">
+                                <i class="bi bi-person-plus me-1"></i>Registrar alumno
+                            </a>
+                        </div>
+                        {{ form.alumno }}
+                        {% for e in form.alumno.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">{{ form.libro.label }}</label>
+                        {{ form.libro }}
+                        {% for e in form.libro.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                    </div>
+                    {% if sin_alumnos %}
+                    <div class="alert alert-warning small py-2 d-flex align-items-center justify-content-between gap-2">
+                        <span><i class="bi bi-exclamation-triangle me-1"></i>No hay alumnos activos disponibles.</span>
+                        <a href="{% url 'alumnos:crear' %}" class="btn btn-sm btn-warning text-nowrap">
+                            <i class="bi bi-person-plus me-1"></i>Registrar alumno
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info small py-2">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Solo alumnos <strong>activos sin multas pendientes</strong> y libros <strong>con stock</strong>.
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Tab 2: Fechas -->
+                <div class="tab-pane fade" id="tab-fecha" role="tabpanel">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">{{ form.fecha_devolucion_esperada.label }}</label>
+                        {{ form.fecha_devolucion_esperada }}
+                        {% for e in form.fecha_devolucion_esperada.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                    </div>
+                    <div class="alert alert-warning small py-2">
+                        <i class="bi bi-clock me-1"></i>
+                        El plazo estándar es de <strong>15 días</strong>. Se generará multa de $1.00/día por retraso.
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-check-lg me-1"></i>{{ accion }}
+                </button>
+                <a href="{% url 'prestamos:lista' %}" class="btn btn-outline-secondary">Cancelar</a>
+            </div>
+
+        </form>
+
+        <!-- Últimos préstamos registrados -->
+        {% if ultimos_prestamos %}
+        <div class="mt-4 pt-3 border-top">
+            <h6 class="text-muted fw-semibold mb-3">
+                <i class="bi bi-clock-history me-1"></i>Últimos préstamos registrados
+            </h6>
+            <div class="bg-white rounded shadow-sm overflow-hidden">
+                <table class="table table-sm table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="small fw-semibold">Alumno</th>
+                            <th class="small fw-semibold">Libro</th>
+                            <th class="small fw-semibold">Devolución</th>
+                            <th class="small fw-semibold">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in ultimos_prestamos %}
+                        <tr>
+                            <td class="small">{{ p.alumno.nombre }} {{ p.alumno.apellido }}</td>
+                            <td class="small text-muted">{{ p.libro.titulo|truncatechars:28 }}</td>
+                            <td class="small text-muted">{{ p.fecha_devolucion_esperada|date:"d/m/Y" }}</td>
+                            <td>
+                                {% if p.estado == 'activo' %}
+                                    <span class="badge bg-success-subtle text-success">Activo</span>
+                                {% elif p.estado == 'vencido' %}
+                                    <span class="badge bg-danger-subtle text-danger">Vencido</span>
+                                {% else %}
+                                    <span class="badge bg-secondary-subtle text-secondary">Devuelto</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- ── Columna lateral: instrucciones ────────────────── -->
+    <div class="col-lg-5">
+        <div class="bg-white rounded shadow-sm p-4">
+
+            <!-- Tips: Alumno y libro -->
+            <div id="tips-alumno" class="tips-panel">
+                <h6 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-people text-success"></i>Alumno y libro
+                </h6>
+                <ul class="list-unstyled mb-0" style="font-size:.88rem;">
+                    <li class="mb-3 d-flex gap-2">
+                        <i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>Alumno</strong><br>
+                            <span class="text-muted">Solo aparecen alumnos con estado <strong>Activo</strong> y sin multas pendientes. Si no encuentras al alumno, regístralo primero.</span>
+                        </div>
+                    </li>
+                    <li class="d-flex gap-2">
+                        <i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>Libro</strong><br>
+                            <span class="text-muted">Solo se listan libros con <strong>stock disponible mayor a 0</strong>. Al registrar el préstamo el stock se descuenta automáticamente.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tips: Fechas -->
+            <div id="tips-fecha" class="tips-panel d-none">
+                <h6 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-calendar-check text-success"></i>Fecha de devolución
+                </h6>
+                <ul class="list-unstyled mb-0" style="font-size:.88rem;">
+                    <li class="mb-3 d-flex gap-2">
+                        <i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>Plazo estándar</strong><br>
+                            <span class="text-muted">El sistema pre-llena <strong>15 días</strong> desde hoy. Puedes modificarlo si el caso lo requiere.</span>
+                        </div>
+                    </li>
+                    <li class="d-flex gap-2">
+                        <i class="bi bi-exclamation-triangle-fill text-warning mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>Multa por retraso</strong><br>
+                            <span class="text-muted">Si el alumno devuelve tarde se generará una multa de <strong>$1.00 por día</strong> de retraso automáticamente.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const tabMap = {
+        'tab-alumno-btn': 'tips-alumno',
+        'tab-fecha-btn':  'tips-fecha',
+    };
+    document.querySelectorAll('#prestamoTabs button[data-bs-toggle="tab"]').forEach(btn => {
+        btn.addEventListener('shown.bs.tab', function () {
+            Object.values(tabMap).forEach(id => document.getElementById(id).classList.add('d-none'));
+            document.getElementById(tabMap[btn.id])?.classList.remove('d-none');
+        });
+    });
+
+    const panes = document.querySelectorAll('.tab-pane');
+    for (const pane of panes) {
+        if (pane.querySelector('.text-danger')) {
+            const btn = document.querySelector('[data-bs-target="#' + pane.id + '"]');
+            if (btn) bootstrap.Tab.getOrCreateInstance(btn).show();
+            break;
+        }
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block title %}{{ titulo }} — Biblioteca{% endblock %}
+
+{% block content %}
+
+<div class="mb-4">
+    <a href="{% url 'libros:categorias_lista' %}" class="text-muted small text-decoration-none">
+        <i class="bi bi-arrow-left me-1"></i>Categorías
+    </a>
+    <div class="d-flex align-items-center gap-2 mt-2">
+        <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center"
+             style="width:42px;height:42px;flex-shrink:0;">
+            <i class="bi {% if categoria %}bi-pencil-square{% else %}bi-tag{% endif %} text-primary fs-5"></i>
+        </div>
+        <div>
+            <h3 class="fw-bold mb-0 lh-1">{{ titulo }}</h3>
+            <span class="text-muted small">Las categorías agrupan los libros en el catálogo</span>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 align-items-start">
+
+    <!-- Formulario -->
+    <div class="col-lg-7">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="bg-white rounded shadow-sm p-4">
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small">{{ form.nombre.label }}</label>
+                    {{ form.nombre }}
+                    {% for e in form.nombre.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small">{{ form.descripcion.label }}</label>
+                    {{ form.descripcion }}
+                    {% for e in form.descripcion.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                </div>
+
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-lg me-1"></i>{{ accion }}
+                </button>
+                <a href="{% url 'libros:categorias_lista' %}" class="btn btn-outline-secondary">Cancelar</a>
+                {% if categoria %}
+                <a href="{% url 'libros:categorias_eliminar' categoria.pk %}" class="btn btn-outline-danger ms-auto">
+                    <i class="bi bi-trash me-1"></i>Eliminar
+                </a>
+                {% endif %}
+            </div>
+        </form>
+
+        <!-- Libros de esta categoría -->
+        {% if categoria and categoria.libros.count %}
+        <div class="mt-4 pt-3 border-top">
+            <h6 class="text-muted fw-semibold mb-3">
+                <i class="bi bi-book me-1"></i>Libros en esta categoría ({{ categoria.libros.count }})
+            </h6>
+            <div class="bg-white rounded shadow-sm overflow-hidden">
+                <table class="table table-sm table-hover mb-0">
+                    <tbody>
+                        {% for libro in categoria.libros.all|slice:":8" %}
+                        <tr>
+                            <td class="small">
+                                <a href="{% url 'libros:detalle' libro.pk %}" class="text-decoration-none fw-semibold">
+                                    {{ libro.titulo }}
+                                </a>
+                            </td>
+                            <td class="small text-muted text-end">{{ libro.anio_publicacion }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% if categoria.libros.count > 8 %}
+                        <tr>
+                            <td colspan="2" class="small text-muted text-center py-2">
+                                y {{ categoria.libros.count|add:"-8" }} más…
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Panel de ayuda -->
+    <div class="col-lg-5">
+        <div class="bg-white rounded shadow-sm p-4">
+            <h6 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                <i class="bi bi-tags text-primary"></i>¿Para qué sirven las categorías?
+            </h6>
+            <ul class="list-unstyled mb-0" style="font-size:.88rem;">
+                <li class="mb-3 d-flex gap-2">
+                    <i class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i>
+                    <div>
+                        <strong>Nombre</strong><br>
+                        <span class="text-muted">Debe ser único y descriptivo (ej. <em>Ciencia Ficción</em>, <em>Matemáticas</em>). Se muestra como filtro en el catálogo público.</span>
+                    </div>
+                </li>
+                <li class="mb-3 d-flex gap-2">
+                    <i class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i>
+                    <div>
+                        <strong>Descripción</strong><br>
+                        <span class="text-muted">Opcional. Ayuda a distinguir categorías con nombres similares.</span>
+                    </div>
+                </li>
+                <li class="d-flex gap-2">
+                    <i class="bi bi-info-circle-fill text-primary mt-1 flex-shrink-0"></i>
+                    <div>
+                        <strong>Uso</strong><br>
+                        <span class="text-muted">Una vez creada, asígnala a los libros desde el formulario de edición de cada libro (pestaña <em>Relación</em>).</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

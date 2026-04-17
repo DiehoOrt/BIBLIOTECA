@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}Préstamos — Biblioteca{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0">
+        <i class="bi bi-bookmark-check me-2 text-primary"></i>Préstamos
+    </h4>
+    <a href="{% url 'prestamos:crear' %}" class="btn btn-primary btn-sm">
+        <i class="bi bi-plus-lg me-1"></i>Nuevo préstamo
+    </a>
+</div>
+
+<!-- Filtros -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body py-3">
+        <form method="get" class="d-flex gap-2 flex-wrap">
+            <input type="text" name="q" value="{{ q }}"
+                   class="form-control" style="max-width:300px;"
+                   placeholder="Alumno, carnet o libro…">
+            <select name="estado" class="form-select" style="max-width:180px;">
+                <option value="">Todos los estados</option>
+                <option value="activo"   {% if estado == 'activo' %}selected{% endif %}>Activo</option>
+                <option value="vencido"  {% if estado == 'vencido' %}selected{% endif %}>Vencido</option>
+                <option value="devuelto" {% if estado == 'devuelto' %}selected{% endif %}>Devuelto</option>
+            </select>
+            <button type="submit" class="btn btn-primary px-4">
+                <i class="bi bi-search"></i>
+            </button>
+            {% if q or estado %}
+            <a href="{% url 'prestamos:lista' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-x-lg"></i>
+            </a>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Alumno</th>
+                        <th>Libro</th>
+                        <th>Prestado</th>
+                        <th>Límite</th>
+                        <th>Devuelto</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in prestamos %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'alumnos:perfil' p.alumno.pk %}" class="fw-semibold text-decoration-none">
+                                {{ p.alumno.apellido }}, {{ p.alumno.nombre }}
+                            </a>
+                            <br><small class="text-muted">{{ p.alumno.carnet }}</small>
+                        </td>
+                        <td>
+                            <a href="{% url 'libros:detalle' p.libro.pk %}" class="text-decoration-none">
+                                {{ p.libro.titulo|truncatechars:35 }}
+                            </a>
+                        </td>
+                        <td>{{ p.fecha_prestamo }}</td>
+                        <td>{{ p.fecha_devolucion_esperada }}</td>
+                        <td>{{ p.fecha_devolucion_real|default:"—" }}</td>
+                        <td>
+                            {% if p.estado == 'activo' %}
+                                <span class="badge bg-success">Activo</span>
+                            {% elif p.estado == 'vencido' %}
+                                <span class="badge bg-danger">Vencido</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Devuelto</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            {% if p.estado != 'devuelto' %}
+                            <a href="{% url 'prestamos:devolver' p.pk %}"
+                               class="btn btn-sm btn-success">
+                                <i class="bi bi-box-arrow-in-left me-1"></i>Devolver
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-5">
+                            No se encontraron préstamos
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
