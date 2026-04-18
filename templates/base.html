@@ -87,11 +87,13 @@
                 </a>
             </li>
 
+            {% comment %}FASE 2 — oculto para avance-50
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'multas:lista' %}">
                     <i class='bx bx-receipt'></i> Multas
                 </a>
             </li>
+            {% endcomment %}
 
             <li class="nav-separator">CATÁLOGO</li>
 
@@ -101,11 +103,13 @@
                 </a>
             </li>
 
+            {% comment %}FASE 2 — oculto para avance-50
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'libros:autores_lista' %}">
                     <i class='bx bx-user-pin'></i> Autores
                 </a>
             </li>
+            {% endcomment %}
 
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'libros:categorias_lista' %}">
@@ -113,11 +117,13 @@
                 </a>
             </li>
 
+            {% comment %}FASE 2 — oculto para avance-50
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'catalogo' %}">
                     <i class='bx bx-grid-alt'></i> Catálogo público
                 </a>
             </li>
+            {% endcomment %}
 
             {% if user.is_superuser %}
             <li class="nav-separator">ADMINISTRACIÓN</li>
