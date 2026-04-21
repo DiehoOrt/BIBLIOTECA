@@ -117,4 +117,5 @@ def eliminar(request, pk):
         'alumno':    alumno,
         'prestamos': prestamos,
         'bloqueado': bloqueado,
-    })
+    }) 
+    # hola mundo solo es una prueba de nada 
