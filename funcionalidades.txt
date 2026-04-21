@@ -1,0 +1,269 @@
+================================================================================
+  NBIBLIOTECA — MAPA DE FUNCIONALIDADES
+  Sistema de Gestión de Biblioteca (UNICAES)
+  Stack: Django 6.0.4 | SQLite | Bootstrap 5.3.3 | ECharts
+================================================================================
+
+RAÍZ DEL PROYECTO
+│
+├── AUTENTICACIÓN
+│   ├── Login        → /login/          (template: login.html)
+│   ├── Logout       → /logout/
+│   ├── Redirección tras login  → /  (dashboard)
+│   └── Redirección tras logout → /login/
+│
+├── DASHBOARD  →  /
+│   ├── KPIs en tiempo real
+│   │   ├── Total de libros
+│   │   ├── Total de alumnos
+│   │   ├── Préstamos activos
+│   │   ├── Préstamos vencidos
+│   │   ├── Multas pendientes
+│   │   └── Monto total de multas pendientes ($)
+│   │
+│   ├── Tablas de alerta
+│   │   ├── Préstamos vencidos (top 10, orden por fecha_devolucion_esperada)
+│   │   └── Próximos a vencer (préstamos activos en los próximos 3 días)
+│   │
+│   └── Gráficos ECharts (static/js/dashboard.js)
+│       ├── [1] Área apilada  — Préstamos vs Devoluciones (últimos 6 meses)
+│       ├── [2] Donut         — Estado de préstamos (Devuelto / Activo / Vencido)
+│       ├── [3] Barra horiz.  — Top 5 libros más prestados
+│       ├── [4] Línea apilada — Préstamos por estado por mes (6 meses)
+│       ├── [5] Donut         — Estado de multas (Pendiente / Pagada / Anulada)
+│       └── [6] Barra         — Ingresos por multas pagadas por mes
+│
+├── REPORTE DE MOROSOS  →  /reporte-morosos/
+│   ├── Tabla: Préstamos en estado VENCIDO
+│   ├── Tabla: Multas en estado PENDIENTE
+│   ├── Total acumulado de multas
+│   ├── Botón imprimir (ventana del navegador)
+│   └── Exportar CSV  →  /reporte-morosos/?formato=csv
+│       └── Columnas: Carnet, Apellido, Nombre, Email, Libro,
+│                     Fecha préstamo, Fecha vencimiento,
+│                     Días de atraso, Monto ($), Motivo
+│
+│
+├── APP: ALUMNOS  →  /alumnos/
+│   │
+│   ├── LISTAR  →  /alumnos/
+│   │   ├── Requiere: login
+│   │   ├── Búsqueda: nombre, apellido, carnet (icontains OR)
+│   │   ├── Filtro: estado (activo / inactivo / suspendido)
+│   │   └── Orden: apellido, nombre
+│   │
+│   ├── CREAR  →  /alumnos/nuevo/
+│   │   ├── Requiere: login
+│   │   ├── Formulario con tabs:
+│   │   │   ├── Tab 1 — Información: nombre, apellido, carnet
+│   │   │   ├── Tab 2 — Contacto:    email
+│   │   │   └── Tab 3 — Estado:      estado (activo/inactivo/suspendido)
+│   │   ├── Al guardar: redirige al perfil del alumno creado
+│   │   └── Sidebar "Últimos alumnos agregados"
+│   │       └── Últimos 5 alumnos por fecha_inscripcion DESC
+│   │
+│   ├── PERFIL  →  /alumnos/<pk>/
+│   │   ├── Requiere: login
+│   │   ├── Datos del alumno: carnet, email, fecha inscripción, estado
+│   │   ├── Contadores: préstamos activos, multas pendientes
+│   │   ├── Préstamos activos/vencidos (últimos 20, orden fecha_devolucion_esperada)
+│   │   ├── Multas pendientes (con detalle del préstamo)
+│   │   └── Historial de devoluciones (últimas 15, orden fecha_devolucion_real DESC)
+│   │
+│   ├── EDITAR  →  /alumnos/<pk>/editar/
+│   │   ├── Requiere: login
+│   │   ├── Mismo formulario de tabs que CREAR (pre-poblado)
+│   │   ├── Al guardar: redirige al perfil
+│   │   └── Sidebar "Últimos alumnos agregados" (excluye el alumno siendo editado)
+│   │
+│   └── ELIMINAR  →  /alumnos/<pk>/eliminar/
+│       ├── Requiere: login
+│       ├── GET: confirmación con lista de préstamos
+│       ├── POST: elimina
+│       └── BLOQUEO: si el alumno tiene préstamos (FK PROTECT)
+│
+│
+├── APP: LIBROS  →  /libros/
+│   │
+│   ├── LISTAR (admin)  →  /libros/
+│   │   ├── Requiere: login
+│   │   ├── Búsqueda: título, apellido autor, ISBN, categoría
+│   │   ├── Optimización: prefetch_related('autores', 'categorias')
+│   │   └── Orden: título
+│   │
+│   ├── CATÁLOGO PÚBLICO  →  /libros/catalogo/
+│   │   ├── Requiere: NO (acceso libre)
+│   │   ├── Vista en grid de 5 columnas responsive (cards con hover effect)
+│   │   ├── Búsqueda: título, apellido autor
+│   │   └── Filtro: por categoría (dropdown)
+│   │
+│   ├── DETALLE  →  /libros/<pk>/
+│   │   ├── Requiere: login
+│   │   ├── Portada, ISBN, año, autores, categorías, descripción
+│   │   ├── Disponibilidad: cantidad_disponible / cantidad_total
+│   │   ├── En poder de alumnos (últimos 20 préstamos activos/vencidos)
+│   │   └── Historial de devoluciones (últimas 20, orden fecha_devolucion_real DESC)
+│   │
+│   ├── CREAR  →  /libros/nuevo/
+│   │   ├── Requiere: login
+│   │   ├── Campos: título, ISBN, año, cant. total, cant. disponible, descripción, portada
+│   │   ├── Autores:     checkboxes (M2M manual → crea LibroAutor)
+│   │   ├── Categorías:  checkboxes (M2M manual → crea LibroCategoria)
+│   │   └── Sidebar "Últimos libros agregados" (últimos 5 por id DESC)
+│   │
+│   ├── EDITAR  →  /libros/<pk>/editar/
+│   │   ├── Requiere: login
+│   │   ├── Form pre-poblado + checkboxes marcados
+│   │   ├── Lógica M2M: borra y recrea LibroAutor / LibroCategoria
+│   │   └── Sidebar "Últimos libros agregados" (excluye el libro siendo editado)
+│   │
+│   ├── ELIMINAR  →  /libros/<pk>/eliminar/
+│   │   ├── Requiere: login
+│   │   └── BLOQUEO: si el libro tiene préstamos (FK PROTECT)
+│   │
+│   ├── CATEGORÍAS
+│   │   ├── Listar    →  /libros/categorias/
+│   │   ├── Crear     →  /libros/categorias/nueva/
+│   │   ├── Editar    →  /libros/categorias/<pk>/editar/
+│   │   └── Eliminar  →  /libros/categorias/<pk>/eliminar/
+│   │
+│   └── AUTORES
+│       ├── Listar    →  /libros/autores/
+│       ├── Crear     →  /libros/autores/nuevo/
+│       ├── Editar    →  /libros/autores/<pk>/editar/
+│       └── Eliminar  →  /libros/autores/<pk>/eliminar/
+│
+│
+├── APP: PRESTAMOS  →  /prestamos/
+│   │
+│   ├── LISTAR  →  /prestamos/
+│   │   ├── Requiere: login
+│   │   ├── Búsqueda: apellido alumno, nombre, carnet, título libro
+│   │   ├── Filtro: estado (activo / vencido / devuelto)
+│   │   └── Orden: -fecha_prestamo (más recientes primero)
+│   │
+│   ├── CREAR  →  /prestamos/nuevo/
+│   │   ├── Requiere: login
+│   │   ├── Formulario con tabs:
+│   │   │   ├── Tab 1 — Alumno y libro:
+│   │   │   │   ├── Alumno  (solo muestra alumnos con estado=ACTIVO)
+│   │   │   │   └── Libro   (solo muestra libros con cantidad_disponible > 0)
+│   │   │   └── Tab 2 — Fechas:
+│   │   │       └── Fecha devolución esperada (default: hoy + 15 días)
+│   │   ├── Validaciones:
+│   │   │   ├── El alumno debe estar ACTIVO
+│   │   │   └── El alumno NO debe tener multas PENDIENTES
+│   │   ├── Al guardar:
+│   │   │   └── Signal post_save → decrementa libro.cantidad_disponible en 1
+│   │   └── Sidebar "Últimos préstamos registrados" (últimos 5 por id DESC)
+│   │
+│   └── DEVOLVER  →  /prestamos/<pk>/devolver/
+│       ├── Requiere: login
+│       ├── GET: muestra resumen del préstamo + cálculo de multa estimada
+│       │   ├── Días de retraso = hoy - fecha_devolucion_esperada (si > 0)
+│       │   └── Multa estimada = días * $1.00
+│       └── POST: guarda fecha_devolucion_real = hoy
+│           └── Signal post_save detecta cambio a DEVUELTO:
+│               ├── libro.cantidad_disponible += 1
+│               └── Si hay retraso → crea Multa automáticamente
+│                   ├── monto  = días_retraso * $1.00
+│                   └── motivo = "Devolución tardía: X día(s) de retraso"
+│
+│
+└── APP: MULTAS  →  /multas/
+    │
+    ├── LISTAR  →  /multas/
+    │   ├── Requiere: login
+    │   ├── Búsqueda: apellido alumno, nombre, carnet
+    │   ├── Filtro: estado (pendiente / pagada / anulada)
+    │   ├── Optimización: select_related('prestamo__alumno', 'prestamo__libro')
+    │   └── Orden: -id (más recientes primero)
+    │
+    ├── PAGAR  →  /multas/<pk>/pagar/
+    │   ├── Requiere: login
+    │   ├── POST: estado = PAGADA, fecha_pago = hoy
+    │   └── Redirige a lista
+    │
+    └── ANULAR  →  /multas/<pk>/anular/
+        ├── Requiere: superuser (is_superuser=True)
+        ├── POST: estado = ANULADA
+        └── Redirige a lista
+
+
+================================================================================
+  LÓGICA DE NEGOCIO AUTOMÁTICA (Django Signals)
+================================================================================
+
+  SIGNAL: pre_save (Prestamo)
+  └── Captura el estado anterior (_old_estado) para detectar transiciones
+
+  SIGNAL: post_save (Prestamo, created=True)
+  └── libro.cantidad_disponible -= 1   [al crear préstamo]
+
+  SIGNAL: post_save (Prestamo, estado cambió a DEVUELTO)
+  ├── libro.cantidad_disponible += 1
+  └── Si fecha_devolucion_real > fecha_devolucion_esperada:
+      └── Multa.objects.create(monto = días * 1.00, motivo = "Devolución tardía...")
+
+
+================================================================================
+  CÓMO FUNCIONA EL "HISTORIAL DE ÚLTIMOS AGREGADOS"
+================================================================================
+
+  Este bloque aparece en los formularios de CREAR y EDITAR como sidebar/panel
+  lateral para dar contexto al usuario mientras trabaja.
+
+  ALUMNOS (crear/editar):
+  └── Alumno.objects.order_by('-fecha_inscripcion').exclude(pk=pk_actual)[:5]
+
+  LIBROS (crear/editar):
+  └── Libro.objects.order_by('-id').exclude(pk=pk_actual)[:5]
+
+  PRÉSTAMOS (crear):
+  └── Prestamo.objects.order_by('-id').select_related(...)[:5]
+
+  En los detalles (perfil/detalle libro) el historial muestra operaciones
+  pasadas completas, no solo los últimos creados:
+
+  PERFIL ALUMNO → historial de devoluciones:
+  └── Prestamo.objects.filter(alumno=alumno, estado=DEVUELTO)
+                      .order_by('-fecha_devolucion_real')[:15]
+
+  DETALLE LIBRO → historial de devoluciones:
+  └── Prestamo.objects.filter(libro=libro, estado=DEVUELTO)
+                      .order_by('-fecha_devolucion_real')[:20]
+
+
+================================================================================
+  RESTRICCIONES Y VALIDACIONES
+================================================================================
+
+  ┌─────────────────────┬──────────────────────────────────────────────────┐
+  │ Acción              │ Restricción                                      │
+  ├─────────────────────┼──────────────────────────────────────────────────┤
+  │ Eliminar alumno     │ Bloqueado si tiene préstamos (FK PROTECT)        │
+  │ Eliminar libro      │ Bloqueado si tiene préstamos (FK PROTECT)        │
+  │ Crear préstamo      │ Alumno debe estar ACTIVO                         │
+  │ Crear préstamo      │ Alumno no debe tener multas PENDIENTES           │
+  │ Crear préstamo      │ Libro debe tener cantidad_disponible > 0         │
+  │ Anular multa        │ Solo superusuarios (is_superuser=True)           │
+  │ Eliminar multa      │ No está disponible (no hay vista de eliminar)    │
+  └─────────────────────┴──────────────────────────────────────────────────┘
+
+
+================================================================================
+  ROLES DE USUARIO
+================================================================================
+
+  Superusuario (is_superuser=True)
+  └── Acceso total, incluida anulación de multas y panel admin
+
+  Bibliotecario (grupo "Bibliotecario", is_staff=False)
+  ├── CRUD completo: alumnos, libros, autores, categorías, préstamos
+  └── Solo ver y modificar: multas (no puede anular)
+
+  Público (sin login)
+  └── Solo acceso al catálogo de libros (/libros/catalogo/)
+
+
+================================================================================
