@@ -81,6 +81,7 @@
                         <th>Libro</th>
                         <th>Venció el</th>
                         <th>Atraso</th>
+                        <th>Estado Multas</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -101,6 +102,15 @@
                                 {{ p.fecha_devolucion_esperada|timesince:hoy }}
                             </span>
                         </td>
+                        <td>  {% if p.multa.estado == 'pendiente' %}                                                                                                                                               
+                                    <span class="badge bg-warning text-dark">Pendiente</span>
+                                {% elif p.multa.estado == 'pagada' %}                                                                                                                                                
+                                    <span class="badge bg-success">Pagada</span>                                                                                                                                     
+                                {% elif p.multa.estado == 'anulada' %}
+                                    <span class="badge bg-secondary">Anulada</span>                                                                                                                                  
+                                {% else %}                                                                                                                                                                           
+                                    <span class="badge bg-light text-muted">Sin multa</span>
+                                {% endif %}        
                     </tr>
                     {% endfor %}
                 </tbody>

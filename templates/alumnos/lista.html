@@ -12,29 +12,7 @@
 </div>
 
 <!-- Filtros -->
-<div class="card shadow-sm mb-4">
-    <div class="card-body py-3">
-        <form method="get" class="d-flex gap-2 flex-wrap">
-            <input type="text" name="q" value="{{ q }}"
-                   class="form-control" style="max-width:320px;"
-                   placeholder="Buscar por nombre, apellido o carnet…" autofocus>
-            <select name="estado" class="form-select" style="max-width:180px;">
-                <option value="">Todos los estados</option>
-                <option value="activo"      {% if estado == 'activo' %}selected{% endif %}>Activo</option>
-                <option value="inactivo"    {% if estado == 'inactivo' %}selected{% endif %}>Inactivo</option>
-                <option value="suspendido"  {% if estado == 'suspendido' %}selected{% endif %}>Suspendido</option>
-            </select>
-            <button type="submit" class="btn btn-primary px-4">
-                <i class="bi bi-search"></i>
-            </button>
-            {% if q or estado %}
-            <a href="{% url 'alumnos:lista' %}" class="btn btn-outline-secondary">
-                <i class="bi bi-x-lg"></i>
-            </a>
-            {% endif %}
-        </form>
-    </div>
-</div>
+
 
 <!-- Tabla -->
 <div class="card shadow-sm">
@@ -92,6 +70,29 @@
                 </tbody>
             </table>
         </div>
+    </div>
+</div>
+<div class="card shadow-sm mb-4">
+    <div class="card-body py-3">
+        <form method="get" class="d-flex gap-2 flex-wrap">
+            <input type="text" name="q" value="{{ q }}"
+                   class="form-control" style="max-width:320px;"
+                   placeholder="Buscar por nombre, apellido o carnet…" autofocus>
+            <select name="estado" class="form-select" style="max-width:180px;">
+                <option value="">Todos los estados</option>
+                <option value="activo"      {% if estado == 'activo' %}selected{% endif %}>Activo</option>
+                <option value="inactivo"    {% if estado == 'inactivo' %}selected{% endif %}>Inactivo</option>
+                <option value="suspendido"  {% if estado == 'suspendido' %}selected{% endif %}>Suspendido</option>
+            </select>
+            <button type="submit" class="btn btn-primary px-4">
+                <i class="bi bi-search"></i>
+            </button>
+            {% if q or estado %}
+            <a href="{% url 'alumnos:lista' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-x-lg"></i>
+            </a>
+            {% endif %}
+        </form>
     </div>
 </div>
 {% endblock %}

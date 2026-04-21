@@ -27,7 +27,7 @@
         <div class="card stat-card stat-primary shadow-sm h-100">
             <div class="card-body">
                 <p class="text-muted small mb-1">Libros</p>
-                <p class="fs-2 fw-bold text-primary mb-0">{{ stats.total_libros }}</p>
+                <p class="fs-2 fw-bold mb-0" style="color: #e63946;">{{ stats.total_libros }}</p>
                 <i class="bi bi-book text-muted"></i>
             </div>
         </div>
@@ -36,7 +36,7 @@
         <div class="card stat-card stat-primary shadow-sm h-100">
             <div class="card-body">
                 <p class="text-muted small mb-1">Alumnos</p>
-                <p class="fs-2 fw-bold text-primary mb-0">{{ stats.total_alumnos }}</p>
+                <p class="fs-2 fw-bold  mb-0" style="color: #e63946;">{{ stats.total_alumnos }}</p>
                 <i class="bi bi-mortarboard-fill text-muted"></i>
             </div>
         </div>
@@ -45,7 +45,7 @@
         <div class="card stat-card stat-success shadow-sm h-100">
             <div class="card-body">
                 <p class="text-muted small mb-1">Préstamos activos</p>
-                <p class="fs-2 fw-bold text-success mb-0">{{ stats.prestamos_activos }}</p>
+                <p class="fs-2 fw-bold mb-0" style="color: #e63946;">{{ stats.prestamos_activos }}</p>
                 <i class="bi bi-book-half text-muted"></i>
             </div>
         </div>
@@ -54,7 +54,7 @@
         <div class="card stat-card stat-danger shadow-sm h-100">
             <div class="card-body">
                 <p class="text-muted small mb-1">Vencidos</p>
-                <p class="fs-2 fw-bold text-danger mb-0">{{ stats.prestamos_vencidos }}</p>
+                <p class="fs-2 fw-bold mb-0" style="color: #e63946;">{{ stats.prestamos_vencidos }}</p>
                 <i class="bi bi-exclamation-triangle-fill text-muted"></i>
             </div>
         </div>
@@ -63,7 +63,7 @@
         <div class="card stat-card stat-warning shadow-sm h-100">
             <div class="card-body">
                 <p class="text-muted small mb-1">Multas pendientes</p>
-                <p class="fs-2 fw-bold text-warning mb-0">{{ stats.multas_pendientes }}</p>
+                <p class="fs-2 fw-bold mb-0" style="color: #e63946;" >{{ stats.multas_pendientes }}</p>
                 <i class="bi bi-receipt-cutoff text-muted"></i>
             </div>
         </div>
@@ -72,7 +72,7 @@
         <div class="card stat-card stat-warning shadow-sm h-100">
             <div class="card-body">
                 <p class="text-muted small mb-1">Monto a cobrar</p>
-                <p class="fs-2 fw-bold text-warning mb-0">${{ stats.monto_multas }}</p>
+                <p class="fs-2 fw-bold mb-0" style="color: #e63946;">${{ stats.monto_multas }}</p>
                 <i class="bi bi-coin text-muted"></i>
             </div>
         </div>
@@ -125,7 +125,10 @@
         <div class="card shadow-sm h-100">
             <div class="card-header bg-white fw-semibold border-bottom text-danger">
                 <i class="bi bi-exclamation-circle-fill me-2"></i>Préstamos vencidos
-            </div>
+                    <input type="text" id="buscarVencidos" class="form-control form-control-sm mb-2"
+         placeholder="Buscar alumno o carnet…">                                                                                                                                        
+                                                                                                                                                                                       
+
             <div class="card-body p-0">
                 {% if vencidos %}
                 <div class="table-responsive">
@@ -256,4 +259,12 @@
 {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
 <script src="{% static 'js/dashboard.js' %}"></script>
+<script>
+      document.getElementById('buscarVencidos').addEventListener('input', function () {
+      const q = this.value.toLowerCase();                                                                                                                                              
+      document.querySelectorAll('#tablaVencidos tbody tr').forEach(row => {
+          row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';                                                                                                 
+      });                                                                                                                                                                              
+  });
+</script>
 {% endblock %}

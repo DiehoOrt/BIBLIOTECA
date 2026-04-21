@@ -152,7 +152,7 @@
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
-                    <tr><th>Libro</th><th>Prestado</th><th>Devuelto</th><th>¿A tiempo?</th></tr>
+                    <tr><th>Libro</th><th>Prestado</th><th>Devuelto</th><th>¿A tiempo?</th><th>GeneroM</th></tr>
                 </thead>
                 <tbody>
                     {% for p in historial %}
@@ -169,6 +169,13 @@
                                 <span class="badge bg-success">A tiempo</span>
                             {% else %}
                                 <span class="badge bg-danger">Tardío</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if p.multa %}
+                            <span>si</span>
+                            {% else %}
+                            <span>no</span>
                             {% endif %}
                         </td>
                     </tr>

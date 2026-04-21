@@ -57,7 +57,7 @@ def _ultimos_alumnos(excluir_pk=None):
     qs = Alumno.objects.order_by('-fecha_inscripcion', '-pk')
     if excluir_pk:
         qs = qs.exclude(pk=excluir_pk)
-    return qs[:5]
+    return qs[:8]
 
 
 @login_required

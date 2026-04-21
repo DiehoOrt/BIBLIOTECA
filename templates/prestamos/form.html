@@ -28,13 +28,7 @@
             {% csrf_token %}
 
             <ul class="nav nav-tabs" id="prestamoTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="tab-alumno-btn"
-                            data-bs-toggle="tab" data-bs-target="#tab-alumno"
-                            type="button" role="tab">
-                        Alumno y libro
-                    </button>
-                </li>
+                
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="tab-fecha-btn"
                             data-bs-toggle="tab" data-bs-target="#tab-fecha"
@@ -42,10 +36,31 @@
                         Fechas
                     </button>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="tab-alumno-btn"
+                            data-bs-toggle="tab" data-bs-target="#tab-alumno"
+                            type="button" role="tab">
+                        Alumno y libro
+                    </button>
+                </li>
             </ul>
 
             <div class="tab-content border border-top-0 rounded-bottom p-4 bg-white shadow-sm">
 
+                
+
+                <!-- Tab 2: Fechas -->
+                <div class="tab-pane fade" id="tab-fecha" role="tabpanel">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">{{ form.fecha_devolucion_esperada.label }}</label>
+                        {{ form.fecha_devolucion_esperada }}
+                        {% for e in form.fecha_devolucion_esperada.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                    </div>
+                    <div class="alert alert-warning small py-2">
+                        <i class="bi bi-clock me-1"></i>
+                        El plazo estándar es de <strong>15 días</strong>. Se generará multa de $1.00/día por retraso.
+                    </div>
+                </div>
                 <!-- Tab 1: Alumno y libro -->
                 <div class="tab-pane fade show active" id="tab-alumno" role="tabpanel">
                     <div class="mb-3">
@@ -76,19 +91,6 @@
                         Solo alumnos <strong>activos sin multas pendientes</strong> y libros <strong>con stock</strong>.
                     </div>
                     {% endif %}
-                </div>
-
-                <!-- Tab 2: Fechas -->
-                <div class="tab-pane fade" id="tab-fecha" role="tabpanel">
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold small">{{ form.fecha_devolucion_esperada.label }}</label>
-                        {{ form.fecha_devolucion_esperada }}
-                        {% for e in form.fecha_devolucion_esperada.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
-                    </div>
-                    <div class="alert alert-warning small py-2">
-                        <i class="bi bi-clock me-1"></i>
-                        El plazo estándar es de <strong>15 días</strong>. Se generará multa de $1.00/día por retraso.
-                    </div>
                 </div>
 
             </div>
