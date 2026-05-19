@@ -194,7 +194,7 @@
 
             <!-- Categorías (máx 6) -->
             <div class="col-xs-6 col-md-3">
-                <h6>Categorías</h6>
+                {% comment %} <h6>Categorías</h6>
                 <ul class="footer-links">
                     {% for cat in categorias_footer|slice:":6" %}
                     <li>
@@ -208,7 +208,7 @@
                         <a href="{% url 'catalogo' %}">Ver todas…</a>
                     </li>
                     {% endif %}
-                </ul>
+                </ul> {% endcomment %}
             </div>
 
             <!-- Horarios -->
@@ -241,7 +241,7 @@
                     &copy; {% now "Y" %} Biblioteca UNICAES &mdash; Todos los derechos reservados.
                 </p>
             </div>
-            <div class="col-md-4 col-sm-6 col-xs-12">
+            {% comment %} <div class="col-md-4 col-sm-6 col-xs-12">
                 <ul class="social-icons">
                     <li>
                         <a class="facebook" href="#" title="Facebook">
@@ -264,7 +264,7 @@
                         </a>
                     </li>
                 </ul>
-            </div>
+            </div> {% endcomment %}
         </div>
     </div>
 </footer>

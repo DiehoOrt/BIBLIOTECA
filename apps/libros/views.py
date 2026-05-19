@@ -146,10 +146,25 @@ def eliminar(request, pk):
 
 @login_required
 def categorias_lista(request):
+    # Obtener texto de búsqueda
+    q = request.GET.get('q', '').strip()
+
+    # Consultar categorías
     categorias = Categoria.objects.order_by('nombre')
-    return render(request, 'libros/categorias_lista.html', {'categorias': categorias})
 
+    # Filtrar por nombre o descripción
+    if q:
+        categorias = categorias.filter(
+            nombre__icontains=q
+        ) | categorias.filter(
+            descripcion__icontains=q
+        )
 
+    # Enviar datos al template
+    return render(request, 'libros/categorias_lista.html', {
+        'categorias': categorias.distinct(),
+        'q': q,
+    })
 @login_required
 def categorias_crear(request):
     if request.method == 'POST':
@@ -201,9 +216,25 @@ def categorias_eliminar(request, pk):
 
 @login_required
 def autores_lista(request):
-    autores = Autor.objects.order_by('apellido', 'nombre')
-    return render(request, 'libros/autores_lista.html', {'autores': autores})
+    # Obtener texto de búsqueda
+    q = request.GET.get('q', '').strip()
 
+    # Consultar autores
+    autores = Autor.objects.order_by('apellido', 'nombre')
+
+    # Filtrar por nombre o apellido
+    if q:
+        autores = autores.filter(
+            nombre__icontains=q
+        ) | autores.filter(
+            apellido__icontains=q
+        )
+
+    # Enviar datos al template
+    return render(request, 'libros/autores_lista.html', {
+        'autores': autores.distinct(),
+        'q': q,
+    })
 
 @login_required
 def autores_crear(request):
@@ -245,12 +276,14 @@ def autores_editar(request, pk):
 def autores_eliminar(request, pk):
     autor = get_object_or_404(Autor, pk=pk)
     libros = autor.libros.all()
+
     if request.method == 'POST':
         nombre = str(autor)
         autor.delete()
         messages.success(request, f'Autor "{nombre}" eliminado.')
         return redirect('libros:autores_lista')
+
     return render(request, 'libros/autores_confirmar_eliminar.html', {
-        'autor':  autor,
+        'autor': autor,
         'libros': libros,
     })
