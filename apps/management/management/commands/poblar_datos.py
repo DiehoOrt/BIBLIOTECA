@@ -1,3 +1,15 @@
+# ================================================================
+# Proyecto:  SGBU — Sistema de Gestión Bibliotecaria UNICAES
+# Versión:   1.0.0
+# País:      El Salvador
+# Año:       2026
+# Empresa:   InnoByte
+# Autores:   Jonathan Fuentes Henriquez, Andrew Enrique Mercado,
+#            Hector Jhosue Ramos, Enzo Howard Rivera,
+#            Diego Josue Ortiz, Alejandra Marisol,
+#            Nathaly Portillo, Roberto Leonel Dominguez
+# Licencia:  MIT License
+# ================================================================
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from datetime import date, timedelta

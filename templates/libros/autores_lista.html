@@ -1,3 +1,17 @@
+<!--
+================================================================
+Proyecto:  SGBU — Sistema de Gestión Bibliotecaria UNICAES
+Versión:   1.0.0
+País:      El Salvador
+Año:       2026
+Empresa:   InnoByte
+Autores:   Jonathan Fuentes Henriquez, Andrew Enrique Mercado,
+           Hector Jhosue Ramos, Enzo Howard Rivera,
+           Diego Josue Ortiz, Alejandra Marisol,
+           Nathaly Portillo, Roberto Leonel Dominguez
+Licencia:  MIT License
+================================================================
+-->
 {% extends 'base.html' %}
 {% block title %}Autores — Biblioteca{% endblock %}
 
@@ -9,6 +23,31 @@
     <a href="{% url 'libros:autores_crear' %}" class="btn btn-primary btn-sm">
         <i class="bi bi-plus-lg me-1"></i>Nuevo autor
     </a>
+</div>
+
+<!-- Buscador (igual al estilo de Multas) -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body py-3">
+        <form method="get" class="d-flex gap-2 flex-wrap">
+            <input type="text"
+                   name="q"
+                   value="{{ q }}"
+                   class="form-control"
+                   style="max-width:300px;"
+                   placeholder="Buscar autor por nombre o apellido...">
+
+            <button type="submit" class="btn btn-primary px-4">
+                <i class="bi bi-search"></i>
+            </button>
+
+            {% if q %}
+            <a href="{% url 'libros:autores_lista' %}"
+               class="btn btn-outline-secondary">
+                <i class="bi bi-x-lg"></i>
+            </a>
+            {% endif %}
+        </form>
+    </div>
 </div>
 
 <div class="card shadow-sm">
@@ -47,7 +86,7 @@
                     {% empty %}
                     <tr>
                         <td colspan="4" class="text-center text-muted py-5">
-                            No hay autores registrados.
+                            No se encontraron autores.
                         </td>
                     </tr>
                     {% endfor %}

@@ -1,3 +1,17 @@
+<!--
+================================================================
+Proyecto:  SGBU — Sistema de Gestión Bibliotecaria UNICAES
+Versión:   1.0.0
+País:      El Salvador
+Año:       2026
+Empresa:   InnoByte
+Autores:   Jonathan Fuentes Henriquez, Andrew Enrique Mercado,
+           Hector Jhosue Ramos, Enzo Howard Rivera,
+           Diego Josue Ortiz, Alejandra Marisol,
+           Nathaly Portillo, Roberto Leonel Dominguez
+Licencia:  MIT License
+================================================================
+-->
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
@@ -10,6 +24,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">  
     <link rel="icon" type="image/png" href="{% static 'img/UNICAES_Logo.png' %}">
     {% block extra_css %}{% endblock %}
 </head>
@@ -171,6 +186,102 @@
     {% block content %}{% endblock %}
 
 </main>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="site-footer">
+    <div class="container-fluid px-4 px-md-5">
+        <div class="row">
+
+            <!-- Sobre la biblioteca -->
+            <div class="col-sm-12 col-md-5">
+                <h6>Biblioteca UNICAES</h6>
+                <p>
+                    Universidad Católica de El Salvador.<br>
+                    Sistema de gestión y consulta del catálogo bibliográfico institucional.
+                </p>
+                <ul class="footer-links mt-3">
+                    <li><i class="bi bi-geo-alt me-2"></i>Final Av. El Rosario, Santa Ana, El Salvador</li>
+                    <li><i class="bi bi-telephone me-2"></i>(503) 2484-0600</li>
+                    <li><i class="bi bi-envelope me-2"></i>biblioteca@unicaes.edu.sv</li>
+                </ul>
+            </div>
+
+            <!-- Categorías (máx 6) -->
+            <div class="col-xs-6 col-md-3">
+                {% comment %} <h6>Categorías</h6>
+                <ul class="footer-links">
+                    {% for cat in categorias_footer|slice:":6" %}
+                    <li>
+                        <a href="{% url 'catalogo' %}?categoria={{ cat.pk }}">
+                            {{ cat.nombre }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                    {% if categorias_footer|length > 6 %}
+                    <li>
+                        <a href="{% url 'catalogo' %}">Ver todas…</a>
+                    </li>
+                    {% endif %}
+                </ul> {% endcomment %}
+            </div>
+
+            <!-- Horarios -->
+            <div class="col-xs-6 col-md-4">
+                <h6>Horarios de atención</h6>
+                <ul class="footer-links">
+                    <li class="mb-1">
+                        <span style="color:#aaa;">Lunes — Viernes</span><br>
+                        7:00 a.m. — 6:00 p.m.
+                    </li>
+                    <li class="mb-1 mt-2">
+                        <span style="color:#aaa;">Sábado</span><br>
+                        8:00 a.m. — 12:00 p.m.
+                    </li>
+                    <li class="mt-2">
+                        <span style="color:#aaa;">Domingo</span><br>
+                        Cerrado
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <hr>
+    </div>
+
+    <div class="container-fluid px-4 px-md-5">
+        <div class="row">
+            <div class="col-md-8 col-sm-6 col-xs-12">
+                <p class="copyright-text">
+    &copy; {% now "Y" %} InnoByte &mdash; Biblioteca UNICAES &mdash; Licencia MIT
+</p>
+            </div>
+            {% comment %} <div class="col-md-4 col-sm-6 col-xs-12">
+                <ul class="social-icons">
+                    <li>
+                        <a class="facebook" href="#" title="Facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="twitter" href="#" title="X / Twitter">
+                            <i class="bi bi-twitter-x"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="instagram" href="#" title="Instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="linkedin" href="#" title="LinkedIn">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div> {% endcomment %}
+        </div>
+    </div>
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{% static 'js/nav_active.js' %}"></script>

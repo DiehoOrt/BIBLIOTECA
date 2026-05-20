@@ -1,3 +1,17 @@
+<!--
+================================================================
+Proyecto:  SGBU — Sistema de Gestión Bibliotecaria UNICAES
+Versión:   1.0.0
+País:      El Salvador
+Año:       2026
+Empresa:   InnoByte
+Autores:   Jonathan Fuentes Henriquez, Andrew Enrique Mercado,
+           Hector Jhosue Ramos, Enzo Howard Rivera,
+           Diego Josue Ortiz, Alejandra Marisol,
+           Nathaly Portillo, Roberto Leonel Dominguez
+Licencia:  MIT License
+================================================================
+-->
 {% extends 'base.html' %}
 {% block title %}Categorías — Biblioteca{% endblock %}
 
@@ -9,6 +23,31 @@
     <a href="{% url 'libros:categorias_crear' %}" class="btn btn-primary btn-sm">
         <i class="bi bi-plus-lg me-1"></i>Nueva categoría
     </a>
+</div>
+
+<!-- Buscador -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body py-3">
+        <form method="get" class="d-flex gap-2 flex-wrap">
+            <input type="text"
+                   name="q"
+                   value="{{ q }}"
+                   class="form-control"
+                   style="max-width:300px;"
+                   placeholder="Buscar categoría...">
+
+            <button type="submit" class="btn btn-primary px-4">
+                <i class="bi bi-search"></i>
+            </button>
+
+            {% if q %}
+            <a href="{% url 'libros:categorias_lista' %}"
+               class="btn btn-outline-secondary">
+                <i class="bi bi-x-lg"></i>
+            </a>
+            {% endif %}
+        </form>
+    </div>
 </div>
 
 <div class="card shadow-sm">
@@ -27,7 +66,9 @@
                     {% for cat in categorias %}
                     <tr>
                         <td class="fw-semibold">{{ cat.nombre }}</td>
-                        <td class="text-muted small">{{ cat.descripcion|default:"—" }}</td>
+                        <td class="text-muted small">
+                            {{ cat.descripcion|default:"—" }}
+                        </td>
                         <td class="text-center">
                             <span class="badge bg-secondary-subtle text-secondary">
                                 {{ cat.libros.count }}
@@ -47,7 +88,7 @@
                     {% empty %}
                     <tr>
                         <td colspan="4" class="text-center text-muted py-5">
-                            No hay categorías registradas.
+                            No se encontraron categorías.
                         </td>
                     </tr>
                     {% endfor %}
