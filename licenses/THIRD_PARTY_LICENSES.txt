@@ -1,0 +1,490 @@
+================================================================================
+THIRD-PARTY LICENSES
+Sistema de Gestión Bibliotecaria UNICAES (SGBU) — Versión 1.0.0
+InnoByte — El Salvador, 2026
+================================================================================
+
+Este archivo lista todas las librerías, frameworks y herramientas de terceros
+utilizadas en el proyecto SGBU, junto con sus respectivas licencias originales.
+Todas las licencias aquí enumeradas son compatibles con la licencia MIT adoptada
+para este proyecto y permiten su uso en un contexto académico sin fines de lucro.
+
+================================================================================
+ÍNDICE
+================================================================================
+  FRONTEND
+    1.  React 18.x                   — MIT License
+    2.  TypeScript 5.x               — Apache License 2.0
+    3.  Redux Toolkit 2.x            — MIT License
+    4.  Webpack 5.x                  — MIT License
+    5.  React Testing Library 14.x   — MIT License
+
+  BACKEND
+    6.  Python 3.11+                 — PSF License (compatible con MIT)
+    7.  Django 4.x                   — BSD 3-Clause License
+    8.  Django REST Framework 3.x    — BSD 2-Clause License
+    9.  Black 23.x                   — MIT License
+    10. Flake8 6.x                   — MIT License
+
+  BASE DE DATOS E INFRAESTRUCTURA
+    11. MySQL 8.0                    — GPL v2 con FOSS Exception
+    12. Redis 7.x                    — BSD 3-Clause License
+    13. Docker 24.x                  — Apache License 2.0
+    14. Git 2.x                      — GPL v2
+
+  HERRAMIENTAS DE PRUEBAS
+    15. Cypress 13.x                 — MIT License
+    16. JMeter 5.x                   — Apache License 2.0
+
+================================================================================
+1. REACT 18.x
+   Uso en el proyecto: Renderizado de todas las vistas del sistema.
+   Autor: Meta Platforms, Inc. and affiliates
+   Sitio: https://reactjs.org
+================================================================================
+MIT License
+
+Copyright (c) Meta Platforms, Inc. and affiliates.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+2. TYPESCRIPT 5.x
+   Uso en el proyecto: Tipado estático en todo el código frontend.
+   Autor: Microsoft Corporation
+   Sitio: https://www.typescriptlang.org
+================================================================================
+Apache License
+Version 2.0, January 2004
+http://www.apache.org/licenses/
+
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License. You may obtain a copy of
+the License at:
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+
+================================================================================
+3. REDUX TOOLKIT 2.x
+   Uso en el proyecto: Gestión del estado global (sesión de usuario y datos
+   compartidos entre componentes).
+   Autor: Redux Team
+   Sitio: https://redux-toolkit.js.org
+================================================================================
+MIT License
+
+Copyright (c) 2018 Mark Erikson
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+4. WEBPACK 5.x
+   Uso en el proyecto: Compilación y optimización de assets del frontend.
+   Autor: Tobias Koppers and contributors
+   Sitio: https://webpack.js.org
+================================================================================
+MIT License
+
+Copyright (c) JS Foundation and other contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+5. REACT TESTING LIBRARY 14.x
+   Uso en el proyecto: Pruebas unitarias de componentes React.
+   Autor: Kent C. Dodds and contributors
+   Sitio: https://testing-library.com
+================================================================================
+MIT License
+
+Copyright (c) 2018 Kent C. Dodds
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+6. PYTHON 3.11+
+   Uso en el proyecto: Lenguaje base del backend y lógica de negocio.
+   Autor: Python Software Foundation
+   Sitio: https://www.python.org
+================================================================================
+PSF LICENSE AGREEMENT FOR PYTHON
+
+Copyright (c) 2001-2026 Python Software Foundation. All rights reserved.
+
+1. This LICENSE AGREEMENT is between the Python Software Foundation ("PSF"),
+   and the Individual or Organization ("Licensee") accessing and otherwise
+   using Python software in source or binary form and its associated
+   documentation.
+
+2. Subject to the terms and conditions of this License Agreement, PSF hereby
+   grants Licensee a nonexclusive, royalty-free, world-wide license to
+   reproduce, analyze, test, perform and/or display publicly, prepare
+   derivative works, distribute, and otherwise use Python alone or in any
+   derivative version, provided, however, that PSF's License Agreement and
+   PSF's notice of copyright are retained in Python alone or in any derivative
+   version prepared by Licensee.
+
+NOTE: This license is compatible with MIT and allows free use in open-source
+and academic projects.
+
+Full text: https://docs.python.org/3/license.html
+
+================================================================================
+7. DJANGO 4.x
+   Uso en el proyecto: Framework web principal del backend. Gestión de rutas,
+   ORM, autenticación y panel de administración.
+   Autor: Django Software Foundation
+   Sitio: https://www.djangoproject.com
+================================================================================
+BSD 3-Clause License
+
+Copyright (c) Django Software Foundation and individual contributors.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its contributors
+   may be used to endorse or promote products derived from this software
+   without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+================================================================================
+8. DJANGO REST FRAMEWORK 3.x
+   Uso en el proyecto: Construcción de todos los endpoints REST consumidos
+   por el frontend.
+   Autor: Encode OSS Ltd. (Tom Christie)
+   Sitio: https://www.django-rest-framework.org
+================================================================================
+BSD 2-Clause License
+
+Copyright (c) 2011-2024, Encode OSS Ltd.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+================================================================================
+9. BLACK 23.x
+   Uso en el proyecto: Formateador automático de código Python en desarrollo
+   y pipeline CI/CD.
+   Autor: Łukasz Langa and contributors
+   Sitio: https://black.readthedocs.io
+================================================================================
+MIT License
+
+Copyright (c) 2018 Łukasz Langa
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+10. FLAKE8 6.x
+    Uso en el proyecto: Linter de Python para detección de errores de estilo
+    en pipeline CI/CD.
+    Autor: Tarek Ziadé and contributors
+    Sitio: https://flake8.pycqa.org
+================================================================================
+MIT License
+
+Copyright (c) 2011-2024 Tarek Ziadé and contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+11. MYSQL 8.0
+    Uso en el proyecto: Motor de base de datos relacional. Almacenamiento
+    principal de todos los datos del sistema.
+    Autor: Oracle Corporation
+    Sitio: https://www.mysql.com
+================================================================================
+MySQL is licensed under the GNU General Public License Version 2 (GPL v2),
+with the FOSS License Exception.
+
+The FOSS License Exception permits use of MySQL with open-source software
+licensed under specific FOSS licenses (including MIT, BSD, Apache 2.0) without
+requiring the application to be licensed under GPL.
+
+This project qualifies for the FOSS Exception because:
+  - SGBU is an academic, non-commercial project.
+  - The project code is licensed under MIT License.
+  - MySQL is used only as a database engine, not distributed with the software.
+
+Full GPL v2 text: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+FOSS Exception:   https://www.mysql.com/about/legal/licensing/foss-exception/
+
+================================================================================
+12. REDIS 7.x
+    Uso en el proyecto: Sistema de caché en memoria para consultas frecuentes
+    y gestión de sesiones.
+    Autor: Redis Ltd.
+    Sitio: https://redis.io
+================================================================================
+BSD 3-Clause License
+
+Copyright (c) 2006-2024, Redis Ltd.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its contributors
+   may be used to endorse or promote products derived from this software
+   without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED.
+
+================================================================================
+13. DOCKER 24.x
+    Uso en el proyecto: Contenerización y despliegue estandarizado del sistema
+    en servidor de producción.
+    Autor: Docker, Inc.
+    Sitio: https://www.docker.com
+================================================================================
+Apache License
+Version 2.0, January 2004
+
+Copyright (c) Docker, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License. You may obtain a copy of
+the License at:
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied.
+
+================================================================================
+14. GIT 2.x
+    Uso en el proyecto: Control de versiones distribuido con estrategia
+    GitFlow para gestión del repositorio de código fuente.
+    Autor: Linus Torvalds and the Git community
+    Sitio: https://git-scm.com
+================================================================================
+Git is licensed under the GNU General Public License version 2 (GPL v2).
+
+Copyright (C) Linus Torvalds and others.
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation; version 2 of the License.
+
+NOTE: Git is a development tool used during the build/development process and
+is not distributed with or embedded in the SGBU application itself.
+
+Full GPL v2 text: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+
+================================================================================
+15. CYPRESS 13.x
+    Uso en el proyecto: Pruebas end-to-end automatizadas de flujos completos
+    de usuario.
+    Autor: Cypress.io, Inc.
+    Sitio: https://www.cypress.io
+================================================================================
+MIT License
+
+Copyright (c) 2022 Cypress.io
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+16. APACHE JMETER 5.x
+    Uso en el proyecto: Pruebas de carga y rendimiento bajo concurrencia para
+    validar requisitos no funcionales del sistema.
+    Autor: Apache Software Foundation
+    Sitio: https://jmeter.apache.org
+================================================================================
+Apache License
+Version 2.0, January 2004
+
+Copyright (c) Apache Software Foundation.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License. You may obtain a copy of
+the License at:
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied.
+
+================================================================================
+NOTA DE COMPATIBILIDAD
+================================================================================
+Todas las licencias enumeradas en este archivo (MIT, BSD 2-Clause, BSD
+3-Clause, Apache 2.0, PSF, GPL v2 con FOSS Exception) son compatibles entre
+sí y permiten su uso en un proyecto con licencia MIT para uso académico como el presente.
+
+Git y MySQL (GPL v2) son herramientas externas de desarrollo/infraestructura,
+no código embebido en el software SGBU, por lo que no afectan la licencia MIT
+del proyecto.
+
+Para mayor información sobre compatibilidad de licencias de código abierto:
+https://www.gnu.org/licenses/license-compatibility.html
+================================================================================

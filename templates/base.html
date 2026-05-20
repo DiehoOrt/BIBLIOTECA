@@ -1,3 +1,17 @@
+<!--
+================================================================
+Proyecto:  SGBU — Sistema de Gestión Bibliotecaria UNICAES
+Versión:   1.0.0
+País:      El Salvador
+Año:       2026
+Empresa:   InnoByte
+Autores:   Jonathan Fuentes Henriquez, Andrew Enrique Mercado,
+           Hector Jhosue Ramos, Enzo Howard Rivera,
+           Diego Josue Ortiz, Alejandra Marisol,
+           Nathaly Portillo, Roberto Leonel Dominguez
+Licencia:  MIT License
+================================================================
+-->
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
@@ -10,7 +24,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <link rel="stylesheet" href="{% static 'css/footer.css' %}">  <!-- 👈 AGREGAR ESTA LÍNEA -->
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">  
     <link rel="icon" type="image/png" href="{% static 'img/UNICAES_Logo.png' %}">
     {% block extra_css %}{% endblock %}
 </head>
@@ -238,8 +252,8 @@
         <div class="row">
             <div class="col-md-8 col-sm-6 col-xs-12">
                 <p class="copyright-text">
-                    &copy; {% now "Y" %} Biblioteca UNICAES &mdash; Todos los derechos reservados.
-                </p>
+    &copy; {% now "Y" %} InnoByte &mdash; Biblioteca UNICAES &mdash; Licencia MIT
+</p>
             </div>
             {% comment %} <div class="col-md-4 col-sm-6 col-xs-12">
                 <ul class="social-icons">
