@@ -8,7 +8,8 @@
 #            Hector Jhosue Ramos, Enzo Howard Rivera,
 #            Diego Josue Ortiz, Alejandra Marisol,
 #            Nathaly Portillo, Roberto Leonel Dominguez
-# Licencia:  MIT License
+# Licencia:  Software Propietario — Todos los derechos reservados.
+#            Uso exclusivo autorizado a UNICAES-CRI bajo contrato.
 # ================================================================
 import csv
 import json
@@ -50,8 +51,14 @@ def dashboard(request):
     stats = {
         'total_libros':       Libro.objects.count(),
         'total_alumnos':      Alumno.objects.count(),
-        'prestamos_activos':  Prestamo.objects.filter(estado=Prestamo.ESTADO_ACTIVO).count(),
-        'prestamos_vencidos': Prestamo.objects.filter(estado=Prestamo.ESTADO_VENCIDO).count(),
+        'prestamos_activos':  Prestamo.objects.filter(
+                                  estado=Prestamo.ESTADO_ACTIVO,
+                                  fecha_devolucion_esperada__gte=hoy
+                              ).count(),
+        'prestamos_vencidos': Prestamo.objects.filter(
+                                  Q(estado=Prestamo.ESTADO_VENCIDO) |
+                                  Q(estado=Prestamo.ESTADO_ACTIVO, fecha_devolucion_esperada__lt=hoy)
+                              ).count(),
         'multas_pendientes':  Multa.objects.filter(estado=Multa.ESTADO_PENDIENTE).count(),
         'monto_multas':       Multa.objects.filter(
                                   estado=Multa.ESTADO_PENDIENTE
@@ -61,7 +68,10 @@ def dashboard(request):
     # ── Tablas de la vista ─────────────────────────────────────────────
     vencidos = (
         Prestamo.objects
-        .filter(estado=Prestamo.ESTADO_VENCIDO)
+        .filter(
+            Q(estado=Prestamo.ESTADO_VENCIDO) |
+            Q(estado=Prestamo.ESTADO_ACTIVO, fecha_devolucion_esperada__lt=hoy)
+        )
         .select_related('alumno', 'libro')
         .order_by('fecha_devolucion_esperada')[:10]
     )
@@ -112,12 +122,16 @@ def dashboard(request):
         .annotate(total=Count('id'))
     )
     estado_map = {r['estado']: r['total'] for r in estados_qs}
+    activos_reales = estado_map.get(Prestamo.ESTADO_ACTIVO, 0)
+    vencidos_activos = Prestamo.objects.filter(
+        estado=Prestamo.ESTADO_ACTIVO, fecha_devolucion_esperada__lt=hoy
+    ).count()
     chart_estados = json.dumps({
         'labels': ['Devuelto', 'Activo', 'Vencido'],
         'data':   [
             estado_map.get(Prestamo.ESTADO_DEVUELTO, 0),
-            estado_map.get(Prestamo.ESTADO_ACTIVO,   0),
-            estado_map.get(Prestamo.ESTADO_VENCIDO,  0),
+            activos_reales - vencidos_activos,
+            estado_map.get(Prestamo.ESTADO_VENCIDO, 0) + vencidos_activos,
         ],
     })
 
