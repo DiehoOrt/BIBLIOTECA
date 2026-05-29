@@ -8,7 +8,7 @@
 #            Hector Jhosue Ramos, Enzo Howard Rivera,
 #            Diego Josue Ortiz, Alejandra Marisol,
 #            Nathaly Portillo, Roberto Leonel Dominguez
-# Licencia:  MIT License
+# Licencia:  Software Propietario — Todos los derechos reservados.
 # ================================================================
 """
 Django settings for NBiblioteca project.
