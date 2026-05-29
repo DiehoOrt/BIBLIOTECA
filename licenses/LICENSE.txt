@@ -1,8 +1,6 @@
-MIT License
+LICENCIA DE SOFTWARE PROPIETARIO — USO EXCLUSIVO
 
-Copyright (c) 2026 InnoByte
-Universidad Católica de El Salvador (UNICAES)
-Centro Regional de Ilobasco, El Salvador
+Copyright (c) 2026 InnoByte — El Salvador. Todos los derechos reservados.
 
 Desarrolladores:
   - Jonathan Fuentes Henriquez
@@ -14,28 +12,27 @@ Desarrolladores:
   - Nathaly Portillo
   - Roberto Leonel Dominguez
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+El presente software, «Sistema de Gestión Bibliotecaria UNICAES» (SGBU),
+su código fuente, documentación y materiales asociados son propiedad exclusiva
+de InnoByte. Queda estrictamente prohibido, sin autorización escrita previa
+de InnoByte:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+  (a) Copiar, reproducir o distribuir el software o cualquier parte del mismo.
+  (b) Modificar, adaptar, traducir o crear obras derivadas.
+  (c) Sublicenciar, vender, alquilar o transferir el software a terceros.
+  (d) Aplicar ingeniería inversa o descompilar el código fuente.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+DERECHOS CONCEDIDOS A UNICAES-CRI:
+UNICAES recibe una licencia de uso exclusivo, no transferible, para operar
+el sistema dentro de sus instalaciones institucionales, conforme al contrato
+de desarrollo suscrito entre las partes.
+
+EL SOFTWARE SE PROPORCIONA SEGÚN LOS TÉRMINOS DEL CONTRATO DE DESARROLLO.
+INNOBYTTE OFRECE GARANTÍA DE FUNCIONAMIENTO DURANTE EL PERÍODO DE SOPORTE
+ACORDADO. FUERA DE DICHO PERÍODO, EL SOPORTE ES OPCIONAL Y SUJETO A CONTRATO.
 
 ---
 
-Este software fue desarrollado por InnoByte para la Universidad Católica
-de El Salvador (UNICAES) bajo contrato de desarrollo de software.
 Proyecto: Sistema de Gestión Bibliotecaria UNICAES (SGBU)
 Versión:  1.0.0
 País:     El Salvador
