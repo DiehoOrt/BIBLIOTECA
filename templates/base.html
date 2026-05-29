@@ -134,6 +134,14 @@ Licencia:  MIT License
                 </a>
             </li>
 
+            <li class="nav-separator">SISTEMA</li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'acerca_de' %}">
+                    <i class='bx bx-info-circle'></i> Acerca del sistema
+                </a>
+            </li>
+
             {% if user.is_superuser %}
             <li class="nav-separator">ADMINISTRACIÓN</li>
             <li class="nav-item">

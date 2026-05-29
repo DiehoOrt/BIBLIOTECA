@@ -12,7 +12,9 @@
 # ================================================================
 import csv
 import json
+import os
 from datetime import date, timedelta
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Sum, Q
 from django.db.models.functions import TruncMonth
@@ -202,6 +204,106 @@ def pagina_404(request, *args, **kwargs):
     return HttpResponseNotFound(
         render(request, '404.html').content
     )
+
+
+def _buscar_imagen(carpeta, slug):
+    """Devuelve la URL relativa de la primera imagen encontrada para el slug, o None."""
+    for ext in ('jpg', 'jpeg', 'png', 'webp'):
+        rel = f'{carpeta}/{slug}.{ext}'
+        if os.path.exists(os.path.join(settings.MEDIA_ROOT, rel)):
+            return settings.MEDIA_URL + rel
+    return None
+
+
+@login_required
+def acerca_de(request):
+    _roles = [
+        ('Frontend', [
+            ('Alejandra Marisol',          'alejandra'),
+            ('Nathaly Portillo',           'nathaly'),
+            ('Enzo Howard Rivera',         'enzo'),
+        ]),
+        ('Backend', [
+            ('Jonathan Fuentes Henriquez', 'jonathan'),
+            ('Roberto Leonel Dominguez',   'roberto'),
+            ('Hector Jhosue Ramos',        'hector'),
+        ]),
+        ('Base de Datos', [
+            ('Diego Josue Ortiz',          'diego'),
+            ('Jonathan Fuentes Henriquez', 'jonathan'),
+            ('Andrew Enrique Mercado',     'andrew'),
+        ]),
+    ]
+
+    roles = [
+        {
+            'nombre': rol,
+            'devs': [
+                {
+                    'nombre':  nombre,
+                    'inicial': nombre[0].upper(),
+                    'imagen':  _buscar_imagen('developers', slug),
+                }
+                for nombre, slug in devs
+            ],
+        }
+        for rol, devs in _roles
+    ]
+
+    _NOMBRES_TECH = {
+        'python':       'Python',
+        'django':       'Django',
+        'sqlite':       'SQLite',
+        'bootstrap':    'Bootstrap',
+        'javascript':   'JavaScript',
+        'html':         'HTML',
+        'html5':        'HTML5',
+        'css':          'CSS',
+        'css3':         'CSS3',
+        'git':          'Git',
+        'github':       'GitHub',
+        'chartjs':      'Chart.js',
+        'chartjs-logo': 'Chart.js',
+        'pillow':       'Pillow',
+        'jazzmin':      'Jazzmin',
+        'boxicons':     'Boxicons',
+        'postgresql':   'PostgreSQL',
+        'mysql':        'MySQL',
+        'typescript':   'TypeScript',
+        'vscode':       'VS Code',
+        'docker':       'Docker',
+    }
+
+    _img_exts = {'.jpg', '.jpeg', '.png', '.webp', '.svg'}
+
+    def _slug_from(fname):
+        """Extrae el slug base eliminando todas las extensiones de imagen."""
+        name = fname
+        while True:
+            base, ext = os.path.splitext(name)
+            if ext.lower() not in _img_exts:
+                break
+            name = base
+        return name.lower()
+
+    tech_dir = os.path.join(settings.MEDIA_ROOT, 'tech')
+    tecnologias = []
+    if os.path.isdir(tech_dir):
+        for fname in sorted(os.listdir(tech_dir)):
+            ext = os.path.splitext(fname)[1].lower()
+            if ext in _img_exts:
+                slug = _slug_from(fname)
+                nombre = _NOMBRES_TECH.get(slug, slug.replace('_', ' ').replace('-', ' ').title())
+                tecnologias.append({
+                    'nombre':  nombre,
+                    'inicial': nombre[0].upper(),
+                    'imagen':  settings.MEDIA_URL + f'tech/{fname}',
+                })
+
+    return render(request, 'acerca_de.html', {
+        'roles':       roles,
+        'tecnologias': tecnologias,
+    })
 
 
 @login_required

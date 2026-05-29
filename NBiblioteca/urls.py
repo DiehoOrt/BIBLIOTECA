@@ -26,6 +26,7 @@ urlpatterns = [
     # Dashboard (raíz)
     path('', views.dashboard, name='dashboard'),
     path('reportes/morosos/', views.reporte_morosos, name='reporte_morosos'),
+    path('acerca/', views.acerca_de, name='acerca_de'),
 
     # Catálogo público (sin login)
     path('catalogo/', catalogo_view, name='catalogo'),

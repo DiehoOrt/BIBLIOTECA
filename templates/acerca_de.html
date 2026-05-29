@@ -1,0 +1,340 @@
+<!--
+================================================================
+Proyecto:  SGBU — Sistema de Gestión Bibliotecaria UNICAES
+Versión:   1.0.0
+País:      El Salvador
+Año:       2026
+Empresa:   InnoByte
+Licencia:  MIT License
+================================================================
+-->
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Acerca del sistema — Biblioteca UNICAES{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ── Variables de paleta ──────────────────────── */
+:root {
+    --c-red:       #e8394d;
+    --c-red-dark:  #c0273b;
+    --c-red-deep:  #9b1a2c;
+    --c-red-light: #ff6b7a;
+    --grad-main:   linear-gradient(135deg, var(--c-red-dark) 0%, var(--c-red) 60%, var(--c-red-light) 100%);
+    --grad-card:   linear-gradient(135deg, var(--c-red-deep) 0%, var(--c-red-dark) 100%);
+    --grad-role:   linear-gradient(90deg, var(--c-red-dark) 0%, var(--c-red) 100%);
+    --grad-tech:   linear-gradient(135deg, #c0273b 0%, #e8394d 100%);
+}
+
+/* ── Hero ─────────────────────────────────────── */
+.acerca-hero {
+    background: var(--grad-main);
+    color: #fff;
+    padding: 3rem 2rem 2.5rem;
+    border-radius: 14px;
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.acerca-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 30%, rgba(255,255,255,.12) 0%, transparent 60%);
+    pointer-events: none;
+}
+.acerca-hero .hero-logo {
+    width: 90px;
+    margin-bottom: 1rem;
+}
+.acerca-hero h1 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    margin-bottom: .4rem;
+    letter-spacing: -.3px;
+}
+.acerca-hero .badge-version {
+    background: rgba(255,255,255,.2);
+    color: #fff;
+    border-radius: 20px;
+    padding: .25rem .9rem;
+    font-size: .8rem;
+    letter-spacing: .5px;
+    border: 1px solid rgba(255,255,255,.25);
+}
+.acerca-hero p.lead {
+    color: rgba(255,255,255,.82);
+    font-size: .97rem;
+    margin-top: .75rem;
+}
+
+/* ── Sección título ───────────────────────────── */
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    border-left: 4px solid var(--c-red);
+    padding-left: .75rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ── Empresa ──────────────────────────────────── */
+.empresa-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.07);
+    padding: 1.75rem 2rem;
+    margin-bottom: 2rem;
+    border-top: 4px solid var(--c-red);
+}
+.empresa-card .emp-badge {
+    display: inline-block;
+    background: var(--grad-main);
+    color: #fff;
+    border-radius: 8px;
+    padding: .3rem .9rem;
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .5px;
+    margin-bottom: 1rem;
+}
+.empresa-card h5 {
+    font-weight: 700;
+    color: #1a1a1a;
+    font-size: 1.2rem;
+}
+.empresa-card p {
+    color: #6c757d;
+    font-size: .92rem;
+    margin-bottom: 0;
+}
+.info-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.5rem;
+    margin-top: 1rem;
+}
+.info-item {
+    font-size: .85rem;
+    color: #6c757d;
+}
+.info-item span {
+    font-weight: 600;
+    color: #212529;
+}
+
+/* ── Bloque de rol ────────────────────────────── */
+.role-block {
+    margin-bottom: 2rem;
+}
+.role-header {
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    margin-bottom: 1.1rem;
+}
+.role-badge {
+    background: var(--grad-role);
+    color: #fff;
+    border-radius: 20px;
+    padding: .3rem 1rem;
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: .4px;
+}
+.role-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(232,57,77,.3), transparent);
+}
+
+/* ── Tarjetas de desarrolladores ──────────────── */
+.dev-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1.1rem;
+}
+.dev-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.07);
+    padding: 1.4rem .9rem 1rem;
+    text-align: center;
+    transition: transform .18s, box-shadow .18s;
+}
+.dev-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(232,57,77,.18);
+}
+.dev-avatar {
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto .85rem;
+    display: block;
+    border: 3px solid #f8d7da;
+}
+.dev-initial {
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    margin: 0 auto .85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--grad-card);
+}
+.dev-name {
+    font-size: .83rem;
+    font-weight: 600;
+    color: #212529;
+    line-height: 1.35;
+}
+
+/* ── Tarjetas de tecnologías ───────────────────── */
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+@media (max-width: 768px) {
+    .tech-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+    .tech-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.tech-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 7px rgba(0,0,0,.07);
+    padding: 2rem 1rem 1.5rem;
+    text-align: center;
+    transition: transform .18s, box-shadow .18s;
+}
+.tech-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(232,57,77,.18);
+}
+.tech-card img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: .85rem;
+}
+.tech-initial {
+    width: 80px;
+    height: 80px;
+    border-radius: 14px;
+    margin: 0 auto .85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--grad-tech);
+}
+.tech-name {
+    font-size: .95rem;
+    font-weight: 600;
+    color: #212529;
+}
+.tech-empty {
+    color: #adb5bd;
+    font-size: .9rem;
+    padding: 1rem 0;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-3 px-md-4 py-3">
+
+    <!-- Hero -->
+    <div class="acerca-hero">
+        <img src="{% static 'img/UNICAES_Logo.png' %}" alt="UNICAES" class="hero-logo">
+        <h1>Sistema de Gestión Bibliotecaria</h1>
+        <span class="badge-version">SGBU &mdash; Versión 1.0.0</span>
+        <p class="lead">Biblioteca UNICAES &mdash; Universidad Católica de El Salvador</p>
+    </div>
+
+    <!-- Empresa -->
+    <div class="empresa-card">
+        <span class="emp-badge">InnoByte</span>
+        <h5>Acerca del proyecto</h5>
+        <p>
+            Sistema desarrollado por el equipo <strong>InnoByte</strong> como solución de gestión
+            bibliotecaria para la Universidad Católica de El Salvador (UNICAES).
+            Permite administrar préstamos, devoluciones, multas, catálogo de libros y alumnos
+            desde una interfaz moderna y centralizada.
+        </p>
+        <div class="info-row">
+            <div class="info-item">País: <span>El Salvador</span></div>
+            <div class="info-item">Año: <span>2026</span></div>
+            <div class="info-item">Licencia: <span>MIT License</span></div>
+            <div class="info-item">Versión: <span>1.0.0</span></div>
+        </div>
+    </div>
+
+    <!-- Equipo de desarrollo agrupado por rol -->
+    <h2 class="section-title"><i class='bx bx-group me-2'></i>Equipo de desarrollo</h2>
+
+    {% for rol in roles %}
+    <div class="role-block">
+        <div class="role-header">
+            <span class="role-badge">
+                {% if rol.nombre == "Frontend" %}<i class='bx bx-palette me-1'></i>
+                {% elif rol.nombre == "Backend" %}<i class='bx bx-server me-1'></i>
+                {% else %}<i class='bx bx-data me-1'></i>
+                {% endif %}
+                {{ rol.nombre }}
+            </span>
+            <div class="role-line"></div>
+        </div>
+        <div class="dev-grid">
+            {% for dev in rol.devs %}
+            <div class="dev-card">
+                {% if dev.imagen %}
+                    <img src="{{ dev.imagen }}" alt="{{ dev.nombre }}" class="dev-avatar">
+                {% else %}
+                    <div class="dev-initial">{{ dev.inicial }}</div>
+                {% endif %}
+                <div class="dev-name">{{ dev.nombre }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Tecnologías -->
+    <h2 class="section-title mt-4"><i class='bx bx-code-alt me-2'></i>Tecnologías utilizadas</h2>
+    {% if tecnologias %}
+    <div class="tech-grid">
+        {% for tech in tecnologias %}
+        <div class="tech-card">
+            {% if tech.imagen %}
+                <img src="{{ tech.imagen }}" alt="{{ tech.nombre }}">
+            {% else %}
+                <div class="tech-initial">{{ tech.inicial }}</div>
+            {% endif %}
+            <div class="tech-name">{{ tech.nombre }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="tech-empty">
+        <i class='bx bx-image-alt me-1'></i>
+        Agrega imágenes en <code>media/tech/</code> para mostrar las tecnologías.
+        Mientras tanto se mostrará la inicial de cada tecnología.
+    </p>
+    {% endif %}
+
+</div>
+{% endblock %}
