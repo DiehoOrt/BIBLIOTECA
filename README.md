@@ -66,9 +66,9 @@ NBiblioteca/
 
 ---
 
-## Instalación rápida con `build.sh`
+## Instalación rápida con script
 
-El script `build.sh` automatiza los pasos de instalación. Antes de ejecutarlo necesitas tener el entorno virtual **creado y activo**.
+Los scripts `build.sh` (Linux/macOS) y `build.bat` (Windows) automatizan los pasos de instalación. Antes de ejecutarlos necesitas tener el entorno virtual **creado y activo**.
 
 ### 1. Clonar el repositorio
 
@@ -79,12 +79,14 @@ cd NBiblioteca
 
 ### 2. Crear y activar el entorno virtual
 
+**Linux / macOS**
 ```bash
-# Linux / macOS
 python -m venv venv
 source venv/bin/activate
+```
 
-# Windows
+**Windows (CMD o PowerShell)**
+```bat
 python -m venv venv
 venv\Scripts\activate
 ```
@@ -93,8 +95,19 @@ venv\Scripts\activate
 
 ### 3. Ejecutar el script
 
+**Linux / macOS**
 ```bash
 bash build.sh
+```
+
+**Windows (CMD)**
+```bat
+build.bat
+```
+
+**Windows (PowerShell)**
+```powershell
+.\build.bat
 ```
 
 El script realiza automáticamente:

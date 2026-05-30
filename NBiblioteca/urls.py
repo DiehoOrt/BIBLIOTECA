@@ -8,7 +8,7 @@
 #            Hector Jhosue Ramos, Enzo Howard Rivera,
 #            Diego Josue Ortiz, Alejandra Marisol,
 #            Nathaly Portillo, Roberto Leonel Dominguez
-# Licencia:  MIT License
+# Licencia:  Software Propietario — Todos los derechos reservados.
 # ================================================================
 from django.contrib import admin
 from django.urls import path, include
@@ -26,6 +26,7 @@ urlpatterns = [
     # Dashboard (raíz)
     path('', views.dashboard, name='dashboard'),
     path('reportes/morosos/', views.reporte_morosos, name='reporte_morosos'),
+    path('acerca/', views.acerca_de, name='acerca_de'),
 
     # Catálogo público (sin login)
     path('catalogo/', catalogo_view, name='catalogo'),

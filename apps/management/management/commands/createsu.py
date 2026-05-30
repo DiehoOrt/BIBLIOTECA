@@ -8,7 +8,8 @@
 #            Hector Jhosue Ramos, Enzo Howard Rivera,
 #            Diego Josue Ortiz, Alejandra Marisol,
 #            Nathaly Portillo, Roberto Leonel Dominguez
-# Licencia:  MIT License
+# Licencia:  Software Propietario — Todos los derechos reservados.
+#            Uso exclusivo autorizado a UNICAES-CRI bajo contrato.
 # ================================================================
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
